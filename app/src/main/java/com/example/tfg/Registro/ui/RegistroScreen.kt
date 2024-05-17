@@ -1,14 +1,17 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
-package com.example.tfg.Login.ui
+package com.example.tfg.Registro.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tfg.R
@@ -26,54 +30,83 @@ import com.example.tfg.R
 
 //Referencia: https://www.youtube.com/watch?v=EmUx8wgRxJw
 
-//Función principal que contruye la pantalla de Login sobre un box central y un Column con las distintas funciones ordenadas
+//Función principal que contruye la pantalla de Registro sobre un box central y un Column con las distintas funciones ordenadas
 @Composable
-fun LoginScreen(){
+fun RegistroScreen(){
     Box (
         Modifier
             .fillMaxSize()
-            .padding(20.dp)) {
+            .padding(30.dp)) {
         Column (modifier = Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally){
             Logo()
             Spacer(modifier = Modifier.padding(30.dp))
+            TituloResgistro()
+            Spacer(modifier = Modifier.padding(8.dp))
+            TituloNombre()
+            Spacer(modifier = Modifier.padding(8.dp))
+            CuadradoNombre()
+            Spacer(modifier = Modifier.padding(8.dp))
             TituloEmail()
             Spacer(modifier = Modifier.padding(8.dp))
             CuadradoEmail()
-            Spacer(modifier = Modifier.padding(15.dp))
+            Spacer(modifier = Modifier.padding(8.dp))
             TituloPassword()
             Spacer(modifier = Modifier.padding(8.dp))
             CuadradoPassword()
             Spacer(modifier = Modifier.padding(15.dp))
-            NuevoUsuario()
-            Spacer(modifier = Modifier.padding(10.dp))
-            BotonLogin()
+            Row (modifier = Modifier){
+                BotonCancelar()
+                Spacer(modifier = Modifier.padding(10.dp))
+                BotonRegistrarse()
+            }
+
         }
     }
 }
 
-//Función del Logotipo
+//Función del Logo
 @Composable
 fun Logo(){
     Image(painter = painterResource(id = R.drawable.logoblanco), contentDescription = "Logo")
 }
 
+@Composable
+fun TituloResgistro(){
+    Text(text = "Crear nueva cuenta ")
+}
+
+
+@Composable
+fun TituloNombre(){
+    Text(text = "Nombre:")
+}
+
+@Composable
+fun CuadradoNombre(){
+    TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
+        //placeholder = {Text("")},
+        //keyboardActions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        singleLine = true,
+        maxLines = 1
+    )
+}
+
 //Función del título del Email
 @Composable
 fun TituloEmail(){
-    Text(text = "Correo Electrónico")
+    Text(text = "Correo Electrónico:")
 }
 
 //Cuadro de texto que solicita el Email
 @Composable
 fun CuadradoEmail(){
     TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
-        placeholder = {Text("tuUsuario@gmail.com")},
+        placeholder = {Text("")},
         //keyboardActions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1
     )
 }
-
 //Función del título de la contraseña
 @Composable
 fun TituloPassword(){
@@ -84,7 +117,7 @@ fun TituloPassword(){
 @Composable
 fun CuadradoPassword(){
     TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
-        placeholder = {Text("********")},
+        placeholder = {Text("")},
         //keyboardActions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1
@@ -92,28 +125,38 @@ fun CuadradoPassword(){
 }
 
 @Composable
-fun NuevoUsuario() {
-    Text(text = "¿Eres un nuevo usuario?", modifier = Modifier.clickable {  })
-}
-
-@Composable
-fun BotonLogin() {
+fun BotonCancelar() {
     Button(onClick = {},
         modifier = Modifier
-        .fillMaxWidth()
-        .height(45.dp),
+            .width(150.dp)
+            .height(45.dp),
         colors=ButtonDefaults.buttonColors(
             containerColor = Color.Red,
             disabledContainerColor = Color.Green,
             contentColor = Color.White,
             disabledContentColor = Color.Black
         )) {
-        Text(text = "Iniciar Sesión")
+        Text(text = "Cancelar")
     }
 }
 
+@Composable
+fun BotonRegistrarse() {
+    Button(onClick = {},
+        modifier = Modifier
+            .width(150.dp)
+            .height(45.dp),
+        colors=ButtonDefaults.buttonColors(
+            containerColor = Color.Red,
+            disabledContainerColor = Color.Green,
+            contentColor = Color.White,
+            disabledContentColor = Color.Black
+        )) {
+        Text(text = "Registrarse")
+    }
+}
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewLoginScreen(){
-    LoginScreen()
+    RegistroScreen()
 }
