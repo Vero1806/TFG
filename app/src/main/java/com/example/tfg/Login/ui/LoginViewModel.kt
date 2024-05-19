@@ -1,5 +1,6 @@
 package com.example.tfg.Login.ui
 
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -39,8 +40,9 @@ class LoginViewModel : ViewModel() {
     }
 
     //función de validación del email
-    private fun emailValido(email: String): Boolean = email.length > 6
-    private fun passwordValido(password: String): Boolean = password.length > 6
+    private fun emailValido(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    //está formula no va aquí, si no en el registro para validar el imail. Aquí debemos buscar la conexión con la base de datos.
+    private fun passwordValido(password: String): Boolean = password.length > 8
 
     fun onLoginSeleccion(){
 
