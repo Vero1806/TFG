@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.tfg.Login.ui.LoginScreen
+import com.example.tfg.Login.ui.LoginViewModel
 import com.example.tfg.Registro.ui.RegistroScreen
 import com.example.tfg.ui.theme.TFGTheme
 
@@ -22,7 +23,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    RegistroScreen()
+                    LoginScreen(LoginViewModel())
                 }
             }
         }

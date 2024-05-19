@@ -54,8 +54,6 @@ dependencies {
 
     //Modificación y comentarios de https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=es-419#kts
     val lifecycle_version = "2.8.0"
-    val arch_version = "2.2.0"
-
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
     // ViewModel utilities for Compose
@@ -66,9 +64,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
     // Lifecycle utilities for Compose
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version")
-
     // Saved state module for ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version")
+
+    implementation ("androidx.compose.runtime:runtime-livedata:1.4.3")
 
     implementation("mysql:mysql-connector-java:6.0.6")
     implementation("androidx.core:core-ktx:1.9.0")

@@ -15,12 +15,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.livedata.observeAsState
+
 import com.example.tfg.R
 
 
@@ -28,7 +32,11 @@ import com.example.tfg.R
 
 //Función principal que contruye la pantalla de Login sobre un box central y un Column con las distintas funciones ordenadas
 @Composable
-fun LoginScreen(){
+fun LoginScreen(viewModel: LoginViewModel = viewModel()){
+    val email by viewModel.email.observeAsState(initial = "")
+    val password by viewModel.password.observeAsState(initial = "")
+    val loginHabilitado: Boolean by viewModel.loginHabilitado.observeAsState(initial = false)
+
     Box (
         Modifier
             .fillMaxSize()
@@ -38,15 +46,15 @@ fun LoginScreen(){
             Spacer(modifier = Modifier.padding(30.dp))
             TituloEmail()
             Spacer(modifier = Modifier.padding(8.dp))
-            CuadradoEmail()
+            CuadradoEmail(email) {viewModel.onLoginCambios(it, password)}
             Spacer(modifier = Modifier.padding(15.dp))
             TituloPassword()
             Spacer(modifier = Modifier.padding(8.dp))
-            CuadradoPassword()
+            CuadradoPassword(password) {viewModel.onLoginCambios(email, it)}
             Spacer(modifier = Modifier.padding(15.dp))
             NuevoUsuario()
             Spacer(modifier = Modifier.padding(10.dp))
-            BotonLogin()
+            BotonLogin(loginHabilitado) {viewModel.onLoginSeleccion()}
         }
     }
 }
@@ -65,8 +73,8 @@ fun TituloEmail(){
 
 //Cuadro de texto que solicita el Email
 @Composable
-fun CuadradoEmail(){
-    TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
+fun CuadradoEmail(email:String, onTextFieldChanged: (String) -> Unit){
+    TextField(value = email, onValueChange = {onTextFieldChanged(it)}, modifier = Modifier.fillMaxWidth(),
         placeholder = {Text("tuUsuario@gmail.com")},
         //keyboardActions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
@@ -82,8 +90,8 @@ fun TituloPassword(){
 
 //Cuadro de texto que solicita la contraseña
 @Composable
-fun CuadradoPassword(){
-    TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
+fun CuadradoPassword(password:String, onTextFieldChanged: (String) -> Unit){
+    TextField(value = password, onValueChange = {onTextFieldChanged(it)}, modifier = Modifier.fillMaxWidth(),
         placeholder = {Text("********")},
         //keyboardActions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
@@ -97,17 +105,19 @@ fun NuevoUsuario() {
 }
 
 @Composable
-fun BotonLogin() {
-    Button(onClick = {},
+fun BotonLogin(loginHabilitado: Boolean, onLoginSeleccion: () -> Unit) {
+    Button(onClick = {onLoginSeleccion()},
         modifier = Modifier
-        .fillMaxWidth()
-        .height(45.dp),
+            .fillMaxWidth()
+            .height(45.dp),
         colors=ButtonDefaults.buttonColors(
-            containerColor = Color.Red,
-            disabledContainerColor = Color.Green,
+            containerColor = Color.Green,
+            disabledContainerColor = Color.Red,
             contentColor = Color.White,
             disabledContentColor = Color.Black
-        )) {
+        ),
+        enabled = loginHabilitado
+    ) {
         Text(text = "Iniciar Sesión")
     }
 }
@@ -115,5 +125,5 @@ fun BotonLogin() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewLoginScreen(){
-    LoginScreen()
+    LoginScreen(LoginViewModel())
 }
