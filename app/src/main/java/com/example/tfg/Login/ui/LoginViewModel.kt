@@ -4,8 +4,15 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.tfg.BBDD.Conexion
+import java.sql.Connection
+import java.sql.DriverManager
+import java.sql.DriverManager.getConnection
+import java.sql.SQLException
 
 class LoginViewModel : ViewModel() {
+    //LoginViewModel(var conexion: Conexion) : ViewModel()
+
 
     // getter email
     private val _email = MutableLiveData<String>()
@@ -36,11 +43,9 @@ class LoginViewModel : ViewModel() {
     fun onLoginCambios(email: String, password: String) {
         _email.value = email
         _password.value = password
-        _loginHabilitado.value = emailValido(email) && passwordValido(password)
+        //_loginHabilitado.value = emailValido(email) && passwordValido(password)
     }
 
-    //función de validación del email
-    private fun emailValido(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()
     //está formula no va aquí, si no en el registro para validar el imail. Aquí debemos buscar la conexión con la base de datos.
     private fun passwordValido(password: String): Boolean = password.length > 8
 

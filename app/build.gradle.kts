@@ -51,7 +51,8 @@ android {
 }
 
 dependencies {
-
+    //Jdbc que conecta con la base de datos
+    implementation(files("jdbc"))
     //Modificación y comentarios de https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=es-419#kts
     val lifecycle_version = "2.8.0"
     // ViewModel
@@ -70,6 +71,7 @@ dependencies {
     implementation ("androidx.compose.runtime:runtime-livedata:1.4.3")
 
     implementation("mysql:mysql-connector-java:6.0.6")
+
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.0")
