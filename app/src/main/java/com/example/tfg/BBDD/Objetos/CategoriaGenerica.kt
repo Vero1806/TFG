@@ -4,4 +4,3 @@ data class CategoriaGenerica (
     var idCategoria: Int,
     var nombreCategoria: String
 )
-

@@ -122,8 +122,8 @@ fun BotonLogin(loginHabilitado: Boolean, onLoginSeleccion: () -> Unit) {
     }
 }
 
-//@Preview(showBackground = true, showSystemUi = true)
-//@Composable
-//fun PreviewLoginScreen(){
-//    LoginScreen(LoginViewModel())
-//}
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PreviewLoginScreen(){
+    LoginScreen(LoginViewModel())
+}

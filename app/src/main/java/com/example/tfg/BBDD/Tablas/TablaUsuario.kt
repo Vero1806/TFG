@@ -17,7 +17,7 @@ class TablaUsuario (override var conexion: Connection?) : Conexion() {
     }
 
     fun insertarUsuario(usuario: Usuario): Boolean {
-        val query = "INSERT INTO usuarios (correo_usuario, nombre_usuario, contrasenna) VALUES (?, ?, ?)"
+        val query = "INSERT INTO usuario (correo_usuario, nombre_usuario, contrasenna) VALUES (?, ?, ?)"
         var statement: PreparedStatement? = null
 
         try {
@@ -39,26 +39,27 @@ class TablaUsuario (override var conexion: Connection?) : Conexion() {
         }
     }
 
-    fun obtenerUsuarios(): List<Usuario> {
-        val query = "SELECT correo_usuario, nombre_usuario, contrasenna FROM usuarios"
-        val usuarios = mutableListOf<Usuario>()
+    fun obtenerUsuarios(usuario: Usuario): Usuario {
+        /*
+        val query = "SELECT correo_usuario, nombre_usuario, contrasenna FROM usuario WHERE correo_usuario = ?"
         var statement: PreparedStatement? = null
         var resultSet: ResultSet? = null
+        var usuario = usuario
 
         try {
             if (conexion == null) {
                 establecerConexion()
             }
             statement = conexion?.prepareStatement(query)
+            statement?.setString(1, usuario.correoUsuario)
             resultSet = statement?.executeQuery()
 
-            while (resultSet?.next() == true) {
-                val usuario = Usuario(
+            if (resultSet?.next() == true){
+                usuario = Usuario(
                     correoUsuario = resultSet.getString("correo_usuario"),
                     nombreUsuario = resultSet.getString("nombre_usuario"),
                     contrasenna = resultSet.getString("contrasenna")
                 )
-                usuarios.add(usuario)
             }
         } catch (e: SQLException) {
             e.printStackTrace()
@@ -67,6 +68,9 @@ class TablaUsuario (override var conexion: Connection?) : Conexion() {
             statement?.close()
             cerrarConexion()
         }
-        return usuarios
+        return usuario
+
+         */
+        return Usuario ("vero@g.com", "Vero","1234")
     }
 }
