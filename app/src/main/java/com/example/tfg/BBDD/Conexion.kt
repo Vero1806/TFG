@@ -4,7 +4,7 @@ import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
 
-abstract class Conexion {
+abstract class Conexion  {
 
     //Cuando se usa ? detrás de una sentencia de conexión se está haciendo una especie de TERNARIO lo que permite controlar
     //las excepciones de respuestas nulas por parte de la base de datos. En este Package de base de datos lo veremos mucho.

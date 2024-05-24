@@ -3,7 +3,6 @@ package com.example.tfg.BBDD.Tablas
 import com.example.tfg.BBDD.Conexion
 import java.sql.Connection
 import java.sql.PreparedStatement
-import java.sql.ResultSet
 import java.sql.SQLException
 import com.example.tfg.BBDD.Objetos.Usuario
 
