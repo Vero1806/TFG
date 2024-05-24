@@ -7,19 +7,17 @@ import java.sql.ResultSet
 import java.sql.SQLException
 import com.example.tfg.BBDD.Objetos.Categoria
 
-class TablaCategorias(override var conexion: Connection?) : Conexion() {
-
-    init {
-        establecerConexion()
-    }
+/*
+class TablaCategorias() {
 
     fun insertarCategoria(categoria: Categoria): Boolean {
         val query = "INSERT INTO categoria (id_cuenta, nombre_categoria, cantidad_limite) VALUES (?, ?, ?)"
         var statement: PreparedStatement? = null
 
         try {
+            val conexion = Conexion()
             if (conexion == null) {
-                establecerConexion()
+                conexion.establecerConexion()
             }
             statement = conexion?.prepareStatement(query)
             statement?.setInt(1, categoria.idCuenta)
@@ -65,7 +63,6 @@ class TablaCategorias(override var conexion: Connection?) : Conexion() {
             statement?.close()
             cerrarConexion()
         }
-
         return categorias
     }
 
@@ -91,3 +88,4 @@ class TablaCategorias(override var conexion: Connection?) : Conexion() {
         }
     }
 }
+ */

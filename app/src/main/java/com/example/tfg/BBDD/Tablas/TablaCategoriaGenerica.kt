@@ -7,12 +7,12 @@ import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
 
-class TablaCategoriaGenerica(override var conexion: Connection?) : Conexion() {
+open class TablaCategoriaGenerica(override var conexion: Connection?) : Conexion() {
     init {
         establecerConexion()
     }
 
-    fun obtenerCategoriasGenerica(): List<CategoriaGenerica> {
+    open fun obtenerCategoriasGenerica(): List<CategoriaGenerica> {
         val query = "SELECT id_categoria, nombre_categoria FROM categorias_genericas"
         val categoriasGenericas = mutableListOf<CategoriaGenerica>()
         var statement: PreparedStatement? = null
