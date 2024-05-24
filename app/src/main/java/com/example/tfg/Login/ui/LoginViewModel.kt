@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tfg.BBDD.Conexion
+import com.example.tfg.BBDD.ConexionConcreta
 import com.example.tfg.BBDD.Objetos.Usuario
 import com.example.tfg.BBDD.Tablas.TablaUsuario
 import java.sql.Connection
@@ -23,6 +24,7 @@ class LoginViewModel : ViewModel() {
 
     private val _loginHabilitado = MutableLiveData<Boolean>()
     val loginHabilitado: LiveData<Boolean> = _loginHabilitado
+
 
     init {
        _email.value = ""
@@ -66,10 +68,11 @@ class LoginViewModel : ViewModel() {
     }
 
     fun onLoginSeleccion(): Boolean {
-        val conexion = Conexion()
-        if (CogerUsuario(conexion) == true) {
+        val tablaUsuario = TablaUsuario(null)
+        if (CogerUsuario(tablaUsuario) == true) {
             return true
         }
+        return false
     }
 }
 

@@ -7,7 +7,7 @@ import java.sql.SQLException
 import com.example.tfg.BBDD.Objetos.Usuario
 
 //Se usa override para poder heredad de la clase abstracta conexion
-class TablaUsuario (override var conexion: Connection?) : Conexion() {
+class TablaUsuario(override var conexion: Connection?): Conexion() {
 
     //init llama siempre a establecerConexion aunque no se inicialice en la clase que llama a TablaUsuario
     // lo que simplifica el código futuro
