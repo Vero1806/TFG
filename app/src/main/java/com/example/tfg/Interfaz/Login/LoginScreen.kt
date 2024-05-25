@@ -1,5 +1,5 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
-package com.example.tfg.Login.ui
+package com.example.tfg.Interfaz.Login
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.navigation.NavController
 
 import com.example.tfg.R
 
@@ -32,7 +33,7 @@ import com.example.tfg.R
 
 //Función principal que contruye la pantalla de Login sobre un box central y un Column con las distintas funciones ordenadas
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = viewModel()){
+fun LoginScreen(viewModel: LoginViewModel = viewModel(), estadoNavegacion: NavController){
     val email by viewModel.email.observeAsState(initial = "")
     val password by viewModel.password.observeAsState(initial = "")
     val loginHabilitado: Boolean by viewModel.loginHabilitado.observeAsState(initial = false)
@@ -52,7 +53,7 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel()){
             Spacer(modifier = Modifier.padding(8.dp))
             CuadradoPassword(password) {viewModel.onLoginCambios(email, it)}
             Spacer(modifier = Modifier.padding(15.dp))
-            NuevoUsuario()
+            NuevoUsuario(estadoNavegacion)
             Spacer(modifier = Modifier.padding(10.dp))
             BotonLogin(loginHabilitado) {viewModel.onLoginSeleccion()}
         }
@@ -100,7 +101,7 @@ fun CuadradoPassword(password:String, onTextFieldChanged: (String) -> Unit){
 }
 
 @Composable
-fun NuevoUsuario() {
+public fun NuevoUsuario(estadoNavegacion: NavController) {
     Text(text = "¿Eres un nuevo usuario?", modifier = Modifier.clickable {  })
 }
 
@@ -122,8 +123,9 @@ fun BotonLogin(loginHabilitado: Boolean, onLoginSeleccion: () -> Unit) {
     }
 }
 
+/*
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewLoginScreen(){
     LoginScreen(LoginViewModel())
-}
+}*/

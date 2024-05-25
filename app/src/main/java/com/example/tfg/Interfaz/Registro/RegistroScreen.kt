@@ -1,7 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
-package com.example.tfg.Registro.ui
+package com.example.tfg.Interfaz.Registro
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tfg.R
@@ -38,7 +35,7 @@ fun RegistroScreen(){
             .fillMaxSize()
             .padding(30.dp)) {
         Column (modifier = Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally){
-            Logo()
+            com.example.tfg.Interfaz.Login.Logo()
             Spacer(modifier = Modifier.padding(30.dp))
             TituloResgistro()
             Spacer(modifier = Modifier.padding(8.dp))
@@ -46,11 +43,11 @@ fun RegistroScreen(){
             Spacer(modifier = Modifier.padding(8.dp))
             CuadradoNombre()
             Spacer(modifier = Modifier.padding(8.dp))
-            TituloEmail()
+            com.example.tfg.Interfaz.Login.TituloEmail()
             Spacer(modifier = Modifier.padding(8.dp))
             CuadradoEmail()
             Spacer(modifier = Modifier.padding(8.dp))
-            TituloPassword()
+            com.example.tfg.Interfaz.Login.TituloPassword()
             Spacer(modifier = Modifier.padding(8.dp))
             CuadradoPassword()
             Spacer(modifier = Modifier.padding(15.dp))
