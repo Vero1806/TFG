@@ -22,6 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.tfg.Interfaz.Login.LoginViewModel
 import com.example.tfg.R
 
 
@@ -29,13 +32,13 @@ import com.example.tfg.R
 
 //Función principal que contruye la pantalla de Registro sobre un box central y un Column con las distintas funciones ordenadas
 @Composable
-fun RegistroScreen(){
+fun RegistroScreen(estadoNavegacion: NavController, registroViewModel: RegistroViewModel = viewModel()){
     Box (
         Modifier
             .fillMaxSize()
             .padding(30.dp)) {
         Column (modifier = Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally){
-            com.example.tfg.Interfaz.Login.Logo()
+            Logo()
             Spacer(modifier = Modifier.padding(30.dp))
             TituloResgistro()
             Spacer(modifier = Modifier.padding(8.dp))
@@ -43,16 +46,16 @@ fun RegistroScreen(){
             Spacer(modifier = Modifier.padding(8.dp))
             CuadradoNombre()
             Spacer(modifier = Modifier.padding(8.dp))
-            com.example.tfg.Interfaz.Login.TituloEmail()
+            TituloEmail()
             Spacer(modifier = Modifier.padding(8.dp))
             CuadradoEmail()
             Spacer(modifier = Modifier.padding(8.dp))
-            com.example.tfg.Interfaz.Login.TituloPassword()
+            TituloPassword()
             Spacer(modifier = Modifier.padding(8.dp))
             CuadradoPassword()
             Spacer(modifier = Modifier.padding(15.dp))
             Row (modifier = Modifier){
-                BotonCancelar()
+                BotonCancelar(estadoNavegacion = estadoNavegacion)
                 Spacer(modifier = Modifier.padding(10.dp))
                 BotonRegistrarse()
             }
@@ -122,8 +125,8 @@ fun CuadradoPassword(){
 }
 
 @Composable
-fun BotonCancelar() {
-    Button(onClick = {},
+fun BotonCancelar(estadoNavegacion: NavController) {
+    Button(onClick = {estadoNavegacion.navigate("Login")},
         modifier = Modifier
             .width(150.dp)
             .height(45.dp),
@@ -151,9 +154,4 @@ fun BotonRegistrarse() {
         )) {
         Text(text = "Registrarse")
     }
-}
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewLoginScreen(){
-    RegistroScreen()
 }

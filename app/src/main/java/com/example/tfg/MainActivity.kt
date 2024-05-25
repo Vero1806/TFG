@@ -6,8 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.tfg.Interfaz.Login.LoginScreen
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.example.tfg.Navegacion.NavegacionApp
 import com.example.tfg.ui.theme.TFGTheme
 
@@ -22,10 +24,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavegacionApp()
+                    val estadoNavegacion = rememberNavController()
+                    NavegacionApp(estadoNavegacion = estadoNavegacion)
                 }
             }
         }
+    }
+    @Preview
+    @Composable
+    fun PreviewMain(){
+        val estadoNavegacion = rememberNavController()
+        NavegacionApp(estadoNavegacion = estadoNavegacion)
     }
 }
 

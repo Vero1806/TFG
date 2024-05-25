@@ -33,10 +33,10 @@ import com.example.tfg.R
 
 //Función principal que contruye la pantalla de Login sobre un box central y un Column con las distintas funciones ordenadas
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = viewModel(), estadoNavegacion: NavController){
-    val email by viewModel.email.observeAsState(initial = "")
-    val password by viewModel.password.observeAsState(initial = "")
-    val loginHabilitado: Boolean by viewModel.loginHabilitado.observeAsState(initial = false)
+fun LoginScreen(estadoNavegacion: NavController, loginviewModel: LoginViewModel = viewModel()){
+    val email by loginviewModel.email.observeAsState(initial = "")
+    val password by loginviewModel.password.observeAsState(initial = "")
+    val loginHabilitado: Boolean by loginviewModel.loginHabilitado.observeAsState(initial = false)
 
     Box (
         Modifier
@@ -47,15 +47,15 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), estadoNavegacion: NavCo
             Spacer(modifier = Modifier.padding(30.dp))
             TituloEmail()
             Spacer(modifier = Modifier.padding(8.dp))
-            CuadradoEmail(email) {viewModel.onLoginCambios(it, password)}
+            CuadradoEmail(email) {loginviewModel.onLoginCambios(it, password)}
             Spacer(modifier = Modifier.padding(15.dp))
             TituloPassword()
             Spacer(modifier = Modifier.padding(8.dp))
-            CuadradoPassword(password) {viewModel.onLoginCambios(email, it)}
+            CuadradoPassword(password) {loginviewModel.onLoginCambios(email, it)}
             Spacer(modifier = Modifier.padding(15.dp))
-            NuevoUsuario(estadoNavegacion)
+            NuevoUsuario(estadoNavegacion = estadoNavegacion)
             Spacer(modifier = Modifier.padding(10.dp))
-            BotonLogin(loginHabilitado) {viewModel.onLoginSeleccion()}
+            BotonLogin(loginHabilitado) {loginviewModel.onLoginSeleccion()}
         }
     }
 }
@@ -102,7 +102,7 @@ fun CuadradoPassword(password:String, onTextFieldChanged: (String) -> Unit){
 
 @Composable
 public fun NuevoUsuario(estadoNavegacion: NavController) {
-    Text(text = "¿Eres un nuevo usuario?", modifier = Modifier.clickable {  })
+    Text(text = "¿Eres un nuevo usuario?", modifier = Modifier.clickable {estadoNavegacion.navigate("Registro")})
 }
 
 @Composable
