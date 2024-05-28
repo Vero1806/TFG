@@ -3,7 +3,6 @@ package com.example.tfg.Interfaz.Registro
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.tfg.Interfaz.Login.LoginViewModel
+import androidx.navigation.compose.rememberNavController
 import com.example.tfg.R
 
 
@@ -54,11 +53,8 @@ fun RegistroScreen(estadoNavegacion: NavController, registroViewModel: RegistroV
             Spacer(modifier = Modifier.padding(8.dp))
             CuadradoPassword()
             Spacer(modifier = Modifier.padding(15.dp))
-            Row (modifier = Modifier){
-                BotonCancelar(estadoNavegacion = estadoNavegacion)
-                Spacer(modifier = Modifier.padding(10.dp))
-                BotonRegistrarse()
-            }
+
+            BotonRegistrarse()
 
         }
     }
@@ -67,7 +63,7 @@ fun RegistroScreen(estadoNavegacion: NavController, registroViewModel: RegistroV
 //Función del Logo
 @Composable
 fun Logo(){
-    Image(painter = painterResource(id = R.drawable.logoblanco), contentDescription = "Logo")
+    Image(painter = painterResource(id = R.drawable.dollarmoneylogo), contentDescription = "Logo")
 }
 
 @Composable
@@ -154,4 +150,11 @@ fun BotonRegistrarse() {
         )) {
         Text(text = "Registrarse")
     }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PreviewRegistronScreen(){
+    val estadoNavegacion = rememberNavController()
+    RegistroScreen(estadoNavegacion)
 }

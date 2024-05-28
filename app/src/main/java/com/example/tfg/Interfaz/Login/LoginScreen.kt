@@ -1,5 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 package com.example.tfg.Interfaz.Login
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,9 +25,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavController
-
+import androidx.navigation.compose.rememberNavController
 import com.example.tfg.R
 
 
@@ -63,7 +64,7 @@ fun LoginScreen(estadoNavegacion: NavController, loginviewModel: LoginViewModel 
 //Función del Logotipo
 @Composable
 fun Logo(){
-    Image(painter = painterResource(id = R.drawable.logoblanco), contentDescription = "Logo")
+    Image(painter = painterResource(id = R.drawable.dollarmoneylogo), contentDescription = "Logo")
 }
 
 //Función del título del Email
@@ -123,9 +124,10 @@ fun BotonLogin(loginHabilitado: Boolean, onLoginSeleccion: () -> Unit) {
     }
 }
 
-/*
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewLoginScreen(){
-    LoginScreen(LoginViewModel())
-}*/
+    val estadoNavegacion = rememberNavController()
+    LoginScreen(estadoNavegacion)
+}

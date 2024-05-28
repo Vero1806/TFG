@@ -9,12 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -43,11 +40,13 @@ import com.example.tfg.R
 //Referencia: https://www.youtube.com/watch?v=EmUx8wgRxJw
 
 //Función principal que contruye la pantalla de Registro sobre un box central y un Column con las distintas funciones ordenadas
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PerfilScreen(estadoNavegacion: NavController, perfilViewModel: PerfilViewModel = viewModel()) {
     Scaffold(
         bottomBar = { NavigacionIferior() }
-    ) { innerPadding ->
+    ){ innerPadding ->
         Box(
             Modifier
                 .fillMaxSize()
@@ -58,7 +57,10 @@ fun PerfilScreen(estadoNavegacion: NavController, perfilViewModel: PerfilViewMod
                 modifier = Modifier.align(Alignment.Center),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Logo()
+                Column (modifier = Modifier.align(Alignment.End),
+                    horizontalAlignment = Alignment.End){
+                    Logo()
+                }
                 Spacer(modifier = Modifier.padding(30.dp))
                 TituloResgistro()
                 Spacer(modifier = Modifier.padding(8.dp))
@@ -86,8 +88,13 @@ fun PerfilScreen(estadoNavegacion: NavController, perfilViewModel: PerfilViewMod
 
 //Función del Logo
 @Composable
-fun Logo(){
-    Image(painter = painterResource(id = R.drawable.logoblanco), contentDescription = "Logo")
+fun Logo() {
+    Box(modifier = Modifier.size(80.dp,80.dp)) {
+        Image(
+            painter = painterResource(id = R.drawable.dollarmoneylogo),
+            contentDescription = "Logo"
+        )
+    }
 }
 
 @Composable
@@ -134,6 +141,7 @@ fun TituloPassword(){
 }
 
 //Cuadro de texto que solicita la contraseña
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CuadradoPassword(){
     TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
@@ -194,32 +202,32 @@ private fun NavigacionIferior(modifier: Modifier = Modifier) {
         NavigationBarItem(
             selected = false,
             onClick = {  },
-            icon = { Icon(imageVector = Icons.Default.AddCircle, contentDescription = null) },
+            icon = { Icon(painter = painterResource(id = R.drawable.more), contentDescription = null) },
             label = { Text (text = "Igreso")}
         )
         NavigationBarItem(
             selected = false,
-            onClick = { /*TODO*/ },
-            icon = { Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null) },
+            onClick = {  },
+            icon = { Icon(painter = painterResource(id = R.drawable.baseline_credit_card_24), contentDescription = null) },
             label = { Text (text = "Cuentas")}
         )
         NavigationBarItem(
             selected = false,
-            onClick = { /*TODO*/ },
-            icon = { Icon(imageVector = Icons.Default.CheckCircle, contentDescription = null) },
+            onClick = {  },
+            icon = { Icon(painter = painterResource(id = R.drawable.less), contentDescription = null) },
             label = { Text (text = "Gastos")}
         )
         NavigationBarItem(
             selected = false,
-            onClick = { /*TODO*/ },
-            icon = { Icon(imageVector = Icons.Default.Info, contentDescription = null) },
+            onClick = {  },
+            icon = { Icon(painter = painterResource(id = R.drawable.category), contentDescription = null) },
             label = { Text (text = "Categorias")}
         )
 
     }
 }
 
-@Preview
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewPerfil(){
     val estadoNavegacion = rememberNavController()
