@@ -35,11 +35,13 @@ class TablaUsuario(private val conexion: Conexion) {
         }
     }
 
-    fun obtenerUsuarios(usuario: Usuario): Usuario {
-        val query = "SELECT correo_usuario, nombre_usuario, contrasenna FROM usuario WHERE correo_usuario = ?"
+    fun obtenerUsuarios(usuario: Usuario): Usuario? {
+        val query =
+            "SELECT correo_usuario, nombre_usuario, contrasenna FROM usuario WHERE correo_usuario = ?"
         var statement: PreparedStatement? = null
         var resultSet: ResultSet? = null
         var conex: Connection? = null
+        var user: Usuario? = null
 
         try {
             conex = conexion.establecerConexion()
@@ -48,11 +50,12 @@ class TablaUsuario(private val conexion: Conexion) {
             resultSet = statement?.executeQuery()
 
             if (resultSet?.next() == true) {
-                return Usuario(
+                user = Usuario(
                     correoUsuario = resultSet.getString("correo_usuario"),
                     nombreUsuario = resultSet.getString("nombre_usuario"),
                     contrasenna = resultSet.getString("contrasenna")
                 )
+                println("Usuario encontrado: $user")
             }
         } catch (e: SQLException) {
             e.printStackTrace()
@@ -61,7 +64,7 @@ class TablaUsuario(private val conexion: Conexion) {
             statement?.close()
             conexion.cerrarConexion(conex)
         }
-        return Usuario("", "", "")
+        return user
     }
 }
 

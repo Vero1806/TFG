@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.example.tfg.BBDD.Conexion
 import com.example.tfg.BBDD.Objetos.Usuario
 import com.example.tfg.BBDD.Tablas.TablaUsuario
-
 class LoginViewModel : ViewModel() {
 
     private val _email = MutableLiveData<String>()
@@ -47,7 +46,11 @@ class LoginViewModel : ViewModel() {
     fun CogerUsuario(tablaUsuario: TablaUsuario): Boolean {
         val user = Usuario(_email.value ?: "", "", _password.value ?: "")
         val usuarioBaseDatos = tablaUsuario.obtenerUsuarios(user)
-        return validarLogin(user, usuarioBaseDatos)
+        return if (usuarioBaseDatos != null) {
+            validarLogin(user, usuarioBaseDatos)
+        } else {
+            false
+        }
     }
 
     private fun validarLogin(user: Usuario, usuarioBaseDatos: Usuario): Boolean {
