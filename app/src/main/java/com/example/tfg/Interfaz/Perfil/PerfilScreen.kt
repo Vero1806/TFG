@@ -1,0 +1,227 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+package com.example.tfg.Interfaz.Perfil
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.tfg.R
+
+
+
+//Referencia: https://www.youtube.com/watch?v=EmUx8wgRxJw
+
+//Función principal que contruye la pantalla de Registro sobre un box central y un Column con las distintas funciones ordenadas
+@Composable
+fun PerfilScreen(estadoNavegacion: NavController, perfilViewModel: PerfilViewModel = viewModel()) {
+    Scaffold(
+        bottomBar = { NavigacionIferior() }
+    ) { innerPadding ->
+        Box(
+            Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(30.dp)
+        ) {
+            Column(
+                modifier = Modifier.align(Alignment.Center),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Logo()
+                Spacer(modifier = Modifier.padding(30.dp))
+                TituloResgistro()
+                Spacer(modifier = Modifier.padding(8.dp))
+                TituloNombre()
+                Spacer(modifier = Modifier.padding(8.dp))
+                CuadradoNombre()
+                Spacer(modifier = Modifier.padding(8.dp))
+                TituloEmail()
+                Spacer(modifier = Modifier.padding(8.dp))
+                CuadradoEmail()
+                Spacer(modifier = Modifier.padding(8.dp))
+                TituloPassword()
+                Spacer(modifier = Modifier.padding(8.dp))
+                CuadradoPassword()
+                Spacer(modifier = Modifier.padding(15.dp))
+                Row {
+                    BotonCancelar(estadoNavegacion = estadoNavegacion)
+                    Spacer(modifier = Modifier.width(10.dp))
+                    BotonRegistrarse()
+                }
+            }
+        }
+    }
+}
+
+//Función del Logo
+@Composable
+fun Logo(){
+    Image(painter = painterResource(id = R.drawable.logoblanco), contentDescription = "Logo")
+}
+
+@Composable
+fun TituloResgistro(){
+    Text(text = "Crear nueva cuenta ")
+}
+
+
+@Composable
+fun TituloNombre(){
+    Text(text = "Nombre:")
+}
+
+@Composable
+fun CuadradoNombre(){
+    TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
+        //placeholder = {Text("")},
+        //keyboardActions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        singleLine = true,
+        maxLines = 1
+    )
+}
+
+//Función del título del Email
+@Composable
+fun TituloEmail(){
+    Text(text = "Correo Electrónico:")
+}
+
+//Cuadro de texto que solicita el Email
+@Composable
+fun CuadradoEmail(){
+    TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
+        placeholder = {Text("")},
+        //keyboardActions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        singleLine = true,
+        maxLines = 1
+    )
+}
+//Función del título de la contraseña
+@Composable
+fun TituloPassword(){
+    Text(text = "Contraseña")
+}
+
+//Cuadro de texto que solicita la contraseña
+@Composable
+fun CuadradoPassword(){
+    TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
+        placeholder = {Text("")},
+        //keyboardActions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        singleLine = true,
+        maxLines = 1
+    )
+}
+
+@Composable
+fun BotonCancelar(estadoNavegacion: NavController) {
+    Button(onClick = {estadoNavegacion.navigate("Login")},
+        modifier = Modifier
+            .width(150.dp)
+            .height(45.dp),
+        colors=ButtonDefaults.buttonColors(
+            containerColor = Color.Red,
+            disabledContainerColor = Color.Green,
+            contentColor = Color.White,
+            disabledContentColor = Color.Black
+        )) {
+        Text(text = "Cancelar")
+    }
+}
+
+@Composable
+fun BotonRegistrarse() {
+    Button(onClick = {},
+        modifier = Modifier
+            .width(150.dp)
+            .height(45.dp),
+        colors=ButtonDefaults.buttonColors(
+            containerColor = Color.Red,
+            disabledContainerColor = Color.Green,
+            contentColor = Color.White,
+            disabledContentColor = Color.Black
+        )) {
+        Text(text = "Registrarse")
+    }
+}
+
+//Referencia práctica 3 de Jose Enrique
+@Composable
+private fun NavigacionIferior(modifier: Modifier = Modifier) {
+    // Implement composable here
+    NavigationBar(
+        modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.surface
+    ){
+
+        NavigationBarItem(
+            selected = true,
+            onClick = {  },
+            icon = { Icon(imageVector = Icons.Default.Person, contentDescription = null) },
+            label = { Text (text = "Perfil")}
+        )
+        NavigationBarItem(
+            selected = false,
+            onClick = {  },
+            icon = { Icon(imageVector = Icons.Default.AddCircle, contentDescription = null) },
+            label = { Text (text = "Igreso")}
+        )
+        NavigationBarItem(
+            selected = false,
+            onClick = { /*TODO*/ },
+            icon = { Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null) },
+            label = { Text (text = "Cuentas")}
+        )
+        NavigationBarItem(
+            selected = false,
+            onClick = { /*TODO*/ },
+            icon = { Icon(imageVector = Icons.Default.CheckCircle, contentDescription = null) },
+            label = { Text (text = "Gastos")}
+        )
+        NavigationBarItem(
+            selected = false,
+            onClick = { /*TODO*/ },
+            icon = { Icon(imageVector = Icons.Default.Info, contentDescription = null) },
+            label = { Text (text = "Categorias")}
+        )
+
+    }
+}
+
+@Preview
+@Composable
+fun PreviewPerfil(){
+    val estadoNavegacion = rememberNavController()
+    PerfilScreen(estadoNavegacion)
+}
