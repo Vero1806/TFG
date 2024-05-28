@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
-                ) {
+                ){
                     val estadoNavegacion = rememberNavController()
                     NavegacionApp(estadoNavegacion = estadoNavegacion)
                 }

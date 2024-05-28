@@ -56,7 +56,11 @@ fun LoginScreen(estadoNavegacion: NavController, loginviewModel: LoginViewModel 
             Spacer(modifier = Modifier.padding(15.dp))
             NuevoUsuario(estadoNavegacion = estadoNavegacion)
             Spacer(modifier = Modifier.padding(10.dp))
-            BotonLogin(loginHabilitado) {loginviewModel.onLoginSeleccion()}
+            BotonLogin(loginHabilitado) {
+                if (loginviewModel.onLoginSeleccion()) {
+                    estadoNavegacion.navigate("Perfil")
+                }
+            }
         }
     }
 }
@@ -108,11 +112,12 @@ public fun NuevoUsuario(estadoNavegacion: NavController) {
 
 @Composable
 fun BotonLogin(loginHabilitado: Boolean, onLoginSeleccion: () -> Unit) {
-    Button(onClick = {onLoginSeleccion()},
+    Button(
+        onClick = onLoginSeleccion,
         modifier = Modifier
             .fillMaxWidth()
             .height(45.dp),
-        colors=ButtonDefaults.buttonColors(
+        colors = ButtonDefaults.buttonColors(
             containerColor = Color.Green,
             disabledContainerColor = Color.Red,
             contentColor = Color.White,
@@ -123,7 +128,6 @@ fun BotonLogin(loginHabilitado: Boolean, onLoginSeleccion: () -> Unit) {
         Text(text = "Iniciar Sesión")
     }
 }
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

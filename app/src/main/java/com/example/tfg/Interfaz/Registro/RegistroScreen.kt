@@ -35,7 +35,7 @@ fun RegistroScreen(estadoNavegacion: NavController, registroViewModel: RegistroV
     Box (
         Modifier
             .fillMaxSize()
-            .padding(30.dp)) {
+            .padding(30.dp)){
         Column (modifier = Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally){
             Logo()
             Spacer(modifier = Modifier.padding(30.dp))

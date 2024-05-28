@@ -1,29 +1,26 @@
 package com.example.tfg.BBDD.Tablas
 
 import com.example.tfg.BBDD.Conexion
+import com.example.tfg.BBDD.Objetos.Usuario
 import java.sql.Connection
 import java.sql.PreparedStatement
+import java.sql.ResultSet
 import java.sql.SQLException
-import com.example.tfg.BBDD.Objetos.Usuario
 
 //Se usa override para poder heredad de la clase abstracta conexion
-class TablaUsuario(override var conexion: Connection?): Conexion() {
+class TablaUsuario(private val conexion: Conexion) {
 
     //init llama siempre a establecerConexion aunque no se inicialice en la clase que llama a TablaUsuario
     // lo que simplifica el código futuro
-    init {
-        establecerConexion()
-    }
 
     fun insertarUsuario(usuario: Usuario): Boolean {
         val query = "INSERT INTO usuario (correo_usuario, nombre_usuario, contrasenna) VALUES (?, ?, ?)"
         var statement: PreparedStatement? = null
+        var conex: Connection? = null
 
         try {
-            if (conexion == null) {
-                establecerConexion()
-            }
-            statement = conexion?.prepareStatement(query)
+            conex = conexion.establecerConexion()
+            statement = conex?.prepareStatement(query)
             statement?.setString(1, usuario.correoUsuario)
             statement?.setString(2, usuario.nombreUsuario)
             statement?.setString(3, usuario.contrasenna)
@@ -34,27 +31,24 @@ class TablaUsuario(override var conexion: Connection?): Conexion() {
             return false
         } finally {
             statement?.close()
-            cerrarConexion()
+            conexion.cerrarConexion(conex)
         }
     }
 
     fun obtenerUsuarios(usuario: Usuario): Usuario {
-        /*
         val query = "SELECT correo_usuario, nombre_usuario, contrasenna FROM usuario WHERE correo_usuario = ?"
         var statement: PreparedStatement? = null
         var resultSet: ResultSet? = null
-        var usuario = usuario
+        var conex: Connection? = null
 
         try {
-            if (conexion == null) {
-                establecerConexion()
-            }
-            statement = conexion?.prepareStatement(query)
+            conex = conexion.establecerConexion()
+            statement = conex?.prepareStatement(query)
             statement?.setString(1, usuario.correoUsuario)
             resultSet = statement?.executeQuery()
 
-            if (resultSet?.next() == true){
-                usuario = Usuario(
+            if (resultSet?.next() == true) {
+                return Usuario(
                     correoUsuario = resultSet.getString("correo_usuario"),
                     nombreUsuario = resultSet.getString("nombre_usuario"),
                     contrasenna = resultSet.getString("contrasenna")
@@ -65,11 +59,10 @@ class TablaUsuario(override var conexion: Connection?): Conexion() {
         } finally {
             resultSet?.close()
             statement?.close()
-            cerrarConexion()
+            conexion.cerrarConexion(conex)
         }
-        return usuario
-
-         */
-        return Usuario ("vero@g.com", "Vero","1234")
+        return Usuario("", "", "")
     }
 }
+
+
