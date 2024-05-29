@@ -53,7 +53,6 @@ fun RegistroScreen(estadoNavegacion: NavController, registroViewModel: RegistroV
             Spacer(modifier = Modifier.padding(8.dp))
             CuadradoPassword()
             Spacer(modifier = Modifier.padding(15.dp))
-
             BotonRegistrarse()
 
         }

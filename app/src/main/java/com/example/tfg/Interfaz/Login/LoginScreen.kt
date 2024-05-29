@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -67,9 +68,9 @@ fun LoginScreen(estadoNavegacion: NavController, loginviewModel: LoginViewModel 
             CuadradoPassword(password) {loginviewModel.onLoginCambios(email, it)}
             Spacer(modifier = Modifier.padding(15.dp))
             NuevoUsuario(estadoNavegacion = estadoNavegacion)
-            Spacer(modifier = Modifier.padding(10.dp))
+            Spacer(modifier = Modifier.padding(15.dp))
             BotonLogin(loginHabilitado) {
-                if (loginviewModel.onLoginSeleccion()) {
+                if (loginviewModel.onLoginSeleccion()){
                     estadoNavegacion.navigate("Perfil")
                 }
             }
@@ -80,7 +81,11 @@ fun LoginScreen(estadoNavegacion: NavController, loginviewModel: LoginViewModel 
 //Función del Logotipo
 @Composable
 fun Logo(){
-    Image(painter = painterResource(id = R.drawable.dollarmoneylogo), contentDescription = "Logo")
+    Image(
+        painter = painterResource(id = R.drawable.dollarmoneylogo),
+        contentDescription = "Logo",
+        Modifier.size(250.dp)
+        )
 }
 
 //Función del título del Email
@@ -108,6 +113,7 @@ fun TituloPassword(){
 
 // Referencia: https://stackoverflow.com/questions/65304229/toggle-password-field-jetpack-compose
 // Cuadro de texto que solicita la contraseña
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CuadradoPassword(password:String, onTextFieldChanged: (String) -> Unit){
 
@@ -118,9 +124,9 @@ fun CuadradoPassword(password:String, onTextFieldChanged: (String) -> Unit){
         maxLines = 1,
 
         //Conviente el texto en caracter oculto y comprueba si el ojo esta abierto o no para enseñar la contraseña al usuario
-        visualTransformation = if (passwordVisible){
-            VisualTransformation.None}
-        else {
+        visualTransformation = if (passwordVisible) {
+            VisualTransformation.None
+        } else {
             PasswordVisualTransformation()
         },
         //Oculta las opciones de palabras sugeridas
@@ -138,7 +144,7 @@ fun CuadradoPassword(password:String, onTextFieldChanged: (String) -> Unit){
 }
 
 @Composable
-public fun NuevoUsuario(estadoNavegacion: NavController) {
+fun NuevoUsuario(estadoNavegacion: NavController) {
     Text(text = "¿Eres un nuevo usuario?", modifier = Modifier.clickable {estadoNavegacion.navigate("Registro")})
 }
 

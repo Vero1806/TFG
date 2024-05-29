@@ -106,6 +106,7 @@ fun TituloNombre(){
     Text(text = "Nombre:")
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CuadradoNombre(){
     TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
@@ -194,33 +195,32 @@ private fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: N
             selected = false,
             onClick = {estadoNavegacion.navigate("Perfil")},
             icon = { Icon(imageVector = Icons.Default.Person, contentDescription = null) },
-            label = { Text (text = "Perfil")}
+            label = { Text (text = "Perfil") }
         )
         NavigationBarItem(
             selected = false,
             onClick = { estadoNavegacion.navigate("Ingresos") },
             icon = { Icon(painter = painterResource(id = R.drawable.more), contentDescription = null) },
-            label = { Text (text = "Ingreso")}
+            label = { Text (text = "Ingreso") }
         )
         NavigationBarItem(
             selected = false,
             onClick = { estadoNavegacion.navigate("Cuentas") },
             icon = { Icon(painter = painterResource(id = R.drawable.baseline_credit_card_24), contentDescription = null) },
-            label = { Text (text = "Cuentas")}
+            label = { Text (text = "Cuentas") }
         )
         NavigationBarItem(
             selected = false,
             onClick = { estadoNavegacion.navigate("Gastos") },
             icon = { Icon(painter = painterResource(id = R.drawable.less), contentDescription = null) },
-            label = { Text (text = "Gastos")}
+            label = { Text (text = "Gastos") }
         )
         NavigationBarItem(
             selected = true,
             onClick = {  },
             icon = { Icon(painter = painterResource(id = R.drawable.category), contentDescription = null) },
-            label = { Text (text = "Categorias")}
+            label = { Text (text = "Categorias") }
         )
-
     }
 }
 
