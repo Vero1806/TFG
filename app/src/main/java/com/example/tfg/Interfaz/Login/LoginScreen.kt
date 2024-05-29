@@ -10,18 +10,30 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -94,14 +106,34 @@ fun TituloPassword(){
     Text(text = "Contraseña")
 }
 
-//Cuadro de texto que solicita la contraseña
+// Referencia: https://stackoverflow.com/questions/65304229/toggle-password-field-jetpack-compose
+// Cuadro de texto que solicita la contraseña
 @Composable
 fun CuadradoPassword(password:String, onTextFieldChanged: (String) -> Unit){
+
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
     TextField(value = password, onValueChange = {onTextFieldChanged(it)}, modifier = Modifier.fillMaxWidth(),
-        placeholder = {Text("********")},
-        //keyboardActions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        placeholder = { Text("********") },
         singleLine = true,
-        maxLines = 1
+        maxLines = 1,
+
+        //Conviente el texto en caracter oculto y comprueba si el ojo esta abierto o no para enseñar la contraseña al usuario
+        visualTransformation = if (passwordVisible){
+            VisualTransformation.None}
+        else {
+            PasswordVisualTransformation()
+        },
+        //Oculta las opciones de palabras sugeridas
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        trailingIcon = {
+            //variable que tiene el icono de ojo abierto y cerrado dependiendo del if
+            val image = if (passwordVisible)
+                Icons.Filled.Visibility
+            else Icons.Filled.VisibilityOff
+            IconButton(onClick = {passwordVisible = !passwordVisible}){
+                Icon(imageVector  = image, null)
+            }
+        }
     )
 }
 
