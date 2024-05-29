@@ -13,7 +13,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tfg.Navegacion.NavegacionApp
 import com.example.tfg.ui.theme.TFGTheme
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

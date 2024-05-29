@@ -4,7 +4,6 @@ import com.example.tfg.BBDD.Conexion
 import com.example.tfg.BBDD.Objetos.Usuario
 import java.sql.Connection
 import java.sql.PreparedStatement
-import java.sql.ResultSet
 import java.sql.SQLException
 
 //Se usa override para poder heredad de la clase abstracta conexion
@@ -19,7 +18,7 @@ class TablaUsuario(private val conexion: Conexion) {
         var conex: Connection? = null
 
         try {
-            conex = conexion.establecerConexion()
+            //conex = conexion.establecerConexion()
             statement = conex?.prepareStatement(query)
             statement?.setString(1, usuario.correoUsuario)
             statement?.setString(2, usuario.nombreUsuario)
@@ -35,36 +34,36 @@ class TablaUsuario(private val conexion: Conexion) {
         }
     }
 
-    fun obtenerUsuarios(usuario: Usuario): Usuario? {
-        val query =
-            "SELECT correo_usuario, nombre_usuario, contrasenna FROM usuario WHERE correo_usuario = ?"
-        var statement: PreparedStatement? = null
-        var resultSet: ResultSet? = null
-        var conex: Connection? = null
-        var user: Usuario? = null
-
-        try {
-            conex = conexion.establecerConexion()
-            statement = conex?.prepareStatement(query)
-            statement?.setString(1, usuario.correoUsuario)
-            resultSet = statement?.executeQuery()
-
-            if (resultSet?.next() == true) {
-                user = Usuario(
-                    correoUsuario = resultSet.getString("correo_usuario"),
-                    nombreUsuario = resultSet.getString("nombre_usuario"),
-                    contrasenna = resultSet.getString("contrasenna")
-                )
-                println("Usuario encontrado: $user")
-            }
-        } catch (e: SQLException) {
-            e.printStackTrace()
-        } finally {
-            resultSet?.close()
-            statement?.close()
-            conexion.cerrarConexion(conex)
-        }
-        return user
+    fun obtenerUsuarios(usuario: Usuario): Usuario{
+//        val query =
+//            "SELECT correo_usuario, nombre_usuario, contrasenna FROM usuario WHERE correo_usuario = ?"
+//        var statement: PreparedStatement? = null
+//        var resultSet: ResultSet? = null
+//        var conex: Connection? = null
+//        var user: Usuario? = null
+//
+//        try {
+//            //conex = conexion.establecerConexion()
+//            statement = conex?.prepareStatement(query)
+//            statement?.setString(1, usuario.correoUsuario)
+//            resultSet = statement?.executeQuery()
+//
+//            if (resultSet?.next() == true) {
+//                user = Usuario(
+//                    correoUsuario = resultSet.getString("correo_usuario"),
+//                    nombreUsuario = resultSet.getString("nombre_usuario"),
+//                    contrasenna = resultSet.getString("contrasenna")
+//                )
+//                println("Usuario encontrado: $user")
+//            }
+//        } catch (e: SQLException) {
+//            e.printStackTrace()
+//        } finally {
+//            resultSet?.close()
+//            statement?.close()
+//            conexion.cerrarConexion(conex)
+//        }
+        return Usuario(" "," "," ")
     }
 }
 

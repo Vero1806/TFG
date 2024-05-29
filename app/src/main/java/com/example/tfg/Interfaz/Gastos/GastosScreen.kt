@@ -1,5 +1,5 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
-package com.example.tfg.Interfaz.Perfil
+package com.example.tfg.Interfaz.Gastos
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,13 +35,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.tfg.R
 
-
-
 //Referencia: https://www.youtube.com/watch?v=EmUx8wgRxJw
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PerfilScreen(estadoNavegacion: NavController, perfilViewModel: PerfilViewModel = viewModel()) {
+fun GastosScreen(estadoNavegacion: NavController, gastosViewModel: GastosViewModel = viewModel()) {
     Scaffold(
         bottomBar = { NavigacionIferior(estadoNavegacion = estadoNavegacion) }
     ){ innerPadding ->
@@ -75,6 +73,9 @@ fun PerfilScreen(estadoNavegacion: NavController, perfilViewModel: PerfilViewMod
                 CuadradoPassword()
                 Spacer(modifier = Modifier.padding(15.dp))
                 Row {
+                    BotonCancelar(estadoNavegacion = estadoNavegacion)
+                    Spacer(modifier = Modifier.width(10.dp))
+                    BotonRegistrarse()
                     BotonCancelar(estadoNavegacion = estadoNavegacion)
                     Spacer(modifier = Modifier.width(10.dp))
                     BotonRegistrarse()
@@ -123,7 +124,6 @@ fun TituloEmail(){
 }
 
 //Cuadro de texto que solicita el Email
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CuadradoEmail(){
     TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
@@ -155,7 +155,7 @@ fun CuadradoPassword(){
 fun BotonCancelar(estadoNavegacion: NavController) {
     Button(onClick = {estadoNavegacion.navigate("Login")},
         modifier = Modifier
-            .width(150.dp)
+            .width(80.dp)
             .height(45.dp),
         colors=ButtonDefaults.buttonColors(
             containerColor = Color.Red,
@@ -171,7 +171,7 @@ fun BotonCancelar(estadoNavegacion: NavController) {
 fun BotonRegistrarse() {
     Button(onClick = {},
         modifier = Modifier
-            .width(150.dp)
+            .width(80.dp)
             .height(45.dp),
         colors=ButtonDefaults.buttonColors(
             containerColor = Color.Red,
@@ -193,8 +193,8 @@ private fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: N
     ){
 
         NavigationBarItem(
-            selected = true,
-            onClick = {  },
+            selected = false,
+            onClick = {estadoNavegacion.navigate("Perfil")},
             icon = { Icon(imageVector = Icons.Default.Person, contentDescription = null) },
             label = { Text (text = "Perfil")}
         )
@@ -211,8 +211,8 @@ private fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: N
             label = { Text (text = "Cuentas")}
         )
         NavigationBarItem(
-            selected = false,
-            onClick = { estadoNavegacion.navigate("Gastos") },
+            selected = true,
+            onClick = {  },
             icon = { Icon(painter = painterResource(id = R.drawable.less), contentDescription = null) },
             label = { Text (text = "Gastos")}
         )
@@ -222,7 +222,6 @@ private fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: N
             icon = { Icon(painter = painterResource(id = R.drawable.category), contentDescription = null) },
             label = { Text (text = "Categorias")}
         )
-
     }
 }
 
@@ -230,5 +229,5 @@ private fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: N
 @Composable
 fun PreviewPerfil(){
     val estadoNavegacion = rememberNavController()
-    PerfilScreen(estadoNavegacion)
+    GastosScreen(estadoNavegacion)
 }
