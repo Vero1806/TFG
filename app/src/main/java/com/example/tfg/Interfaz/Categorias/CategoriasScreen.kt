@@ -106,7 +106,6 @@ fun TituloNombre(){
     Text(text = "Nombre:")
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CuadradoNombre(){
     TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
@@ -140,7 +139,6 @@ fun TituloPassword(){
 }
 
 //Cuadro de texto que solicita la contraseña
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CuadradoPassword(){
     TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
