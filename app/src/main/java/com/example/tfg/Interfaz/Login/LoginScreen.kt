@@ -3,6 +3,7 @@ package com.example.tfg.Interfaz.Login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -30,7 +32,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -56,7 +57,8 @@ fun LoginScreen(estadoNavegacion: NavController, loginviewModel: LoginViewModel 
         Modifier
             .fillMaxSize()
             .padding(20.dp)) {
-        Column (modifier = Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally){
+        Column (modifier = Modifier.align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally){
             Logo()
             Spacer(modifier = Modifier.padding(30.dp))
             TituloEmail()
@@ -78,14 +80,22 @@ fun LoginScreen(estadoNavegacion: NavController, loginviewModel: LoginViewModel 
     }
 }
 
-//Función del Logotipo
+//Función del Logotipo cambia el logo del diseño blanco al diseño negro dependiendo del modo del móvil
 @Composable
 fun Logo(){
-    Image(
-        painter = painterResource(id = R.drawable.dollarmoneylogo),
-        contentDescription = "Logo",
-        Modifier.size(250.dp)
+    if(isSystemInDarkTheme()){
+        Image(
+            painter = painterResource(id = R.drawable.logo_dark_mode),
+            contentDescription = "Logo",
+            Modifier.size(250.dp)
         )
+    }else {
+        Image(
+            painter = painterResource(id = R.drawable.logo_light_mode),
+            contentDescription = "Logo",
+            Modifier.size(250.dp)
+        )
+    }
 }
 
 //Función del título del Email
@@ -156,10 +166,10 @@ fun BotonLogin(loginHabilitado: Boolean, onLoginSeleccion: () -> Unit) {
             .fillMaxWidth()
             .height(45.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Green,
-            disabledContainerColor = Color.Red,
-            contentColor = Color.White,
-            disabledContentColor = Color.Black
+            containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContentColor = MaterialTheme.colorScheme.primary
         ),
         enabled = loginHabilitado
     ) {

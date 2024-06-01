@@ -12,6 +12,7 @@ import com.example.tfg.Interfaz.Login.LoginScreen
 import com.example.tfg.Interfaz.Perfil.PerfilScreen
 import com.example.tfg.Interfaz.Registro.RegistroScreen
 
+//Referencia https://www.youtube.com/watch?v=jMRTUGXnZ2s
 @Composable
 fun NavegacionApp(estadoNavegacion: NavHostController){
     NavHost(navController = estadoNavegacion, startDestination = "login"){

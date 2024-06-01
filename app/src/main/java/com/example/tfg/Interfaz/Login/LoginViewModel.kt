@@ -3,7 +3,6 @@ package com.example.tfg.Interfaz.Login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.tfg.BBDD.Conexion
 import com.example.tfg.BBDD.Objetos.Usuario
 import com.example.tfg.BBDD.Tablas.TablaUsuario
 class LoginViewModel : ViewModel() {
@@ -23,23 +22,13 @@ class LoginViewModel : ViewModel() {
         _loginHabilitado.value = false
     }
 
-    fun updateEmail(newEmail: String) {
-        _email.value = newEmail
-        validarLogin()
-    }
-
-    fun updatePassword(newPassword: String) {
-        _password.value = newPassword
-        validarLogin()
-    }
-
     fun onLoginCambios(email: String, password: String) {
         _email.value = email
         _password.value = password
-        validarLogin()
+        validarColorLogin()
     }
 
-    private fun validarLogin() {
+    private fun validarColorLogin() {
         _loginHabilitado.value = !(_email.value.isNullOrEmpty() || _password.value.isNullOrEmpty())
     }
 
@@ -58,8 +47,7 @@ class LoginViewModel : ViewModel() {
     }
 
     fun onLoginSeleccion(): Boolean {
-        val conexion = Conexion()
-        val tablaUsuario = TablaUsuario(conexion)
+        val tablaUsuario = TablaUsuario()
         return CogerUsuario(tablaUsuario)
     }
 }
