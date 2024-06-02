@@ -1,17 +1,10 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 package com.example.tfg.Interfaz.Registro
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -19,25 +12,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -50,17 +32,23 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tfg.R
 
 
+
+
 //Referencia: https://www.youtube.com/watch?v=EmUx8wgRxJw
 //Referencia topBar = https://youtube.com/watch?v=eNuaMn4ukdo
 
 //Función principal que contruye la pantalla de Registro sobre un box central y un Column con las distintas funciones ordenadas
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegistroScreen(estadoNavegacion: NavController, registroViewModel: RegistroViewModel = viewModel()) {
+fun RegistroScreen(
+    estadoNavegacion: NavController,
+    registroViewModel: RegistroViewModel = viewModel()
+) {
     val nombre by registroViewModel.nombre.observeAsState(initial = "")
     val email by registroViewModel.email.observeAsState(initial = "")
     val password by registroViewModel.password.observeAsState(initial = "")
     val registroHabilitado: Boolean by registroViewModel.registroHabilitado.observeAsState(initial = false)
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -94,17 +82,20 @@ fun RegistroScreen(estadoNavegacion: NavController, registroViewModel: RegistroV
                 Spacer(modifier = Modifier.padding(8.dp))
                 TituloNombre()
                 Spacer(modifier = Modifier.padding(8.dp))
-                CuadradoNombre(nombre) {registroViewModel.onRegistroCambios(it, email, password)}
+                CuadradoNombre(nombre) { registroViewModel.onRegistroCambios(it, email, password) }
                 Spacer(modifier = Modifier.padding(8.dp))
                 TituloEmail()
                 Spacer(modifier = Modifier.padding(8.dp))
-                CuadradoEmail(email) {registroViewModel.onRegistroCambios(nombre, it, password)}
+                CuadradoEmail(email) { registroViewModel.onRegistroCambios(nombre, it, password) }
                 Spacer(modifier = Modifier.padding(8.dp))
                 TituloPassword()
                 Spacer(modifier = Modifier.padding(8.dp))
-                CuadradoPassword(password) {registroViewModel.onRegistroCambios(nombre, email, it)}
+                CuadradoPassword(password) { registroViewModel.onRegistroCambios(nombre, email, it) }
                 Spacer(modifier = Modifier.padding(15.dp))
-                BotonRegistrarse(registroHabilitado)
+                BotonRegistrarse(registroHabilitado) {
+                    registroViewModel.registrarUsuario(context)
+                    estadoNavegacion.navigate("Categorias")
+                }
             }
         }
     }
@@ -219,8 +210,8 @@ fun BotonCancelar(estadoNavegacion: NavController) {
 }
 
 @Composable
-fun BotonRegistrarse(registroHabilitado: Boolean) {
-    Button(onClick = {},
+fun BotonRegistrarse(registroHabilitado: Boolean, onClick: () -> Unit) {
+    Button( onClick = onClick,
         modifier = Modifier
             .width(150.dp)
             .height(45.dp),

@@ -1,11 +1,17 @@
 package com.example.tfg.Interfaz.Registro
-
+import android.content.Context
 import android.util.Patterns
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.tfg.BBDD.Objetos.Usuario
-import com.example.tfg.BBDD.Tablas.TablaUsuario
+import com.android.volley.AuthFailureError
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.example.tfg.BBDD.VolleySingleton
+import org.json.JSONException
+import org.json.JSONObject
 
 class RegistroViewModel : ViewModel() {
 
@@ -29,8 +35,9 @@ class RegistroViewModel : ViewModel() {
     }
 
     private fun validarColorRegistro() {
-        _registroHabilitado.value = emailValido(_email.value?: "") && contrasennaValida(_password.value?: "")
+        _registroHabilitado.value = emailValido(_email.value ?: "") && contrasennaValida(_password.value ?: "")
     }
+
     fun onRegistroCambios(nombre: String, email: String, password: String) {
         _nombre.value = nombre
         _email.value = email
@@ -38,26 +45,36 @@ class RegistroViewModel : ViewModel() {
         validarColorRegistro()
     }
 
-    //Comprueba que el correo lleve @ y .com
+    fun registrarUsuario(context: Context) {
+        val url = "http://10.0.2.2/BaseDatosPHP/insertarUsuario.php"
+
+        val stringRequest = object : StringRequest(
+            Request.Method.POST, url,
+            Response.Listener<String> { response ->
+                try {
+                    val obj = JSONObject(response)
+                    Toast.makeText(context, obj.getString("message"), Toast.LENGTH_LONG).show()
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            },
+            Response.ErrorListener { volleyError ->
+                Toast.makeText(context, volleyError.message, Toast.LENGTH_LONG).show()
+            }
+        ) {
+            @Throws(AuthFailureError::class)
+            override fun getParams(): Map<String, String> {
+                val parametros = HashMap<String, String>()
+                parametros["email"] = email.value ?: ""
+                parametros["nombre"] = nombre.value ?: ""
+                parametros["contrasenna"] = password.value ?: ""
+                return parametros
+            }
+        }
+
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest)
+    }
+
     private fun emailValido(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()
     private fun contrasennaValida(password: String): Boolean = password.length > 4
-
-    fun CrearUsuario(tablaUsuario: TablaUsuario): Boolean {
-        val user = Usuario(_email.value ?: "", _nombre.value ?: "", _password.value ?: "")
-        val usuarioBaseDatos = tablaUsuario.obtenerUsuarios(user)
-        return if (usuarioBaseDatos == null) {
-            RegistroValido(user, usuarioBaseDatos)
-        } else {
-            false
-        }
-    }
-    private fun RegistroValido (user: Usuario, usuarioBaseDatos: Usuario): Boolean {
-        return user.correoUsuario != usuarioBaseDatos.correoUsuario
-    }
-
-    //Booleano que devuelto true o false si se crea el usuario puede ser util para control
-    /*fun onCrearRegistro(): Boolean {
-        val tablaUsuario = TablaUsuario()
-        return CrearUsuario(tablaUsuario)
-    }*/
 }

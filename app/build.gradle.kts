@@ -53,6 +53,7 @@ android {
 dependencies {
     //Jdbc que conecta con la base de datos
     implementation(files("jdbc"))
+    implementation("androidx.appcompat:appcompat:1.7.0")
     //Modificación y comentarios de https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=es-419#kts
     val lifecycle_version = "2.8.0"
     // ViewModel
@@ -74,6 +75,9 @@ dependencies {
     implementation("mysql:mysql-connector-java:8.0.33")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
+
+    //Conexión Base de datos con Volley referencia: https://www.youtube.com/watch?v=I33dlFY3qWU
+    implementation("com.android.volley:volley:1.2.1")
 
     implementation("androidx.compose.material:material-icons-extended")
 
