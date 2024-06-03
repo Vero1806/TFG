@@ -105,6 +105,7 @@ fun TituloEmail(){
 }
 
 //Cuadro de texto que solicita el Email
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CuadradoEmail(email:String, onTextFieldChanged: (String) -> Unit){
     TextField(value = email, onValueChange = {onTextFieldChanged(it)}, modifier = Modifier.fillMaxWidth(),

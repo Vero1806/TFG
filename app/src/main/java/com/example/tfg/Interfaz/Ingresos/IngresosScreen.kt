@@ -1,16 +1,13 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 package com.example.tfg.Interfaz.Ingresos
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
@@ -22,14 +19,19 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -40,45 +42,49 @@ import com.example.tfg.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IngresosScreen(estadoNavegacion: NavController, ingresosViewModel: IngresosViewModel = viewModel()) {
+
     Scaffold(
         bottomBar = { NavigacionIferior(estadoNavegacion = estadoNavegacion) }
-    ){ innerPadding ->
+    ) { innerPadding ->
         Box(
             Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(30.dp)
+                .padding(5.dp)
         ) {
             Column(
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .align(Alignment.Center),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Column (modifier = Modifier.align(Alignment.End),
                     horizontalAlignment = Alignment.End){
                     Logo()
                 }
-                Spacer(modifier = Modifier.padding(30.dp))
-                TituloResgistro()
-                Spacer(modifier = Modifier.padding(8.dp))
-                TituloNombre()
-                Spacer(modifier = Modifier.padding(8.dp))
-                CuadradoNombre()
-                Spacer(modifier = Modifier.padding(8.dp))
-                TituloEmail()
-                Spacer(modifier = Modifier.padding(8.dp))
-                CuadradoEmail()
-                Spacer(modifier = Modifier.padding(8.dp))
-                TituloPassword()
-                Spacer(modifier = Modifier.padding(8.dp))
-                CuadradoPassword()
-                Spacer(modifier = Modifier.padding(15.dp))
+                Spacer(modifier = Modifier.padding(10.dp))
                 Row {
-                    BotonCancelar(estadoNavegacion = estadoNavegacion)
-                    Spacer(modifier = Modifier.width(10.dp))
-                    BotonRegistrarse()
-                    BotonCancelar(estadoNavegacion = estadoNavegacion)
-                    Spacer(modifier = Modifier.width(10.dp))
-                    BotonRegistrarse()
+                    tituloCuenta()
+                    Spacer(modifier = Modifier.padding(5.dp))
+                    desplegableCuentas()
+                }
+                Spacer(modifier = Modifier.padding(8.dp))
+                Row {
+                    tituloCategoria()
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    desplegableCategorias()
+                }
+                Spacer(modifier = Modifier.padding(10.dp))
+                Column (
+                    horizontalAlignment = Alignment.CenterHorizontally){
+                    CalculatorDisplay()
+                    Spacer(modifier = Modifier.padding(5.dp))
+                    CalculatorButtons()
+                }
+                Spacer(modifier = Modifier.padding(15.dp))
+                Column (modifier = Modifier.align(Alignment.End),
+                    horizontalAlignment = Alignment.End) {
+                    BotonIngresar()
                 }
             }
         }
@@ -89,103 +95,202 @@ fun IngresosScreen(estadoNavegacion: NavController, ingresosViewModel: IngresosV
 @Composable
 fun Logo() {
     Box(modifier = Modifier.size(80.dp,80.dp)) {
-        Image(
-            painter = painterResource(id = R.drawable.dollarmoneylogo),
-            contentDescription = "Logo"
+        if(isSystemInDarkTheme()){
+            Image(
+                painter = painterResource(id = R.drawable.logo_dark_mode),
+                contentDescription = "Logo",
+                Modifier.size(250.dp)
+            )
+        }else {
+            Image(
+                painter = painterResource(id = R.drawable.logo_light_mode),
+                contentDescription = "Logo",
+                Modifier.size(250.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun tituloCuenta(){
+    Text(text = "Seleccionar Cuenta",  fontSize = 16.sp, fontWeight = FontWeight.Bold)
+}
+
+@Composable
+fun desplegableCuentas() {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    val items = listOf("Item 1", "Item 2", "Item 3")
+    var selectedItem by rememberSaveable { mutableStateOf(items[0]) }
+
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp),
+        contentAlignment = Alignment.TopCenter
+    ) {
+        Column {
+            Button(onClick = { expanded = true }) {
+                Text(text = selectedItem)
+            }
+            if (expanded) {
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.primary)
+                        .padding(8.dp)
+                        .wrapContentSize()
+                ) {
+                    Column {
+                        items.forEach { item ->
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        selectedItem = item
+                                        expanded = false
+                                    }
+                                    .padding(8.dp)
+                            ) {
+                                Text(text = item, fontSize = 16.sp, color = MaterialTheme.colorScheme.surface)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@Composable
+fun tituloCategoria(){
+    Text(text = "Seleccionar Categoría",  fontSize = 16.sp, fontWeight = FontWeight.Bold)
+}
+@Composable
+fun desplegableCategorias() {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    val items = listOf("Item 1", "Item 2", "Item 3")
+    var selectedItem by rememberSaveable { mutableStateOf(items[0]) }
+
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp),
+        contentAlignment = Alignment.TopCenter
+    ) {
+        Column {
+            Button(onClick = { expanded = true }) {
+                Text(text = selectedItem)
+            }
+            if (expanded) {
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.primary)
+                        .padding(8.dp)
+                        .wrapContentSize()
+                ) {
+                    Column {
+                        items.forEach { item ->
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        selectedItem = item
+                                        expanded = false
+                                    }
+                                    .padding(8.dp)
+                            ) {
+                                Text(text = item, fontSize = 16.sp, color = MaterialTheme.colorScheme.surface)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun CalculatorDisplay() {
+    val displayText = rememberSaveable { mutableStateOf("") }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp),
+        contentAlignment = Alignment.CenterEnd
+    ) {
+        Text(
+            text = displayText.value,
+            fontSize = 32.sp,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(16.dp)
         )
     }
 }
 
 @Composable
-fun TituloResgistro(){
-    Text(text = "Crear nueva cuenta ")
-}
+fun CalculatorButtons() {
+    val displayText = rememberSaveable { mutableStateOf("") }
 
-
-@Composable
-fun TituloNombre(){
-    Text(text = "Nombre:")
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CuadradoNombre(){
-    TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
-        //placeholder = {Text("")},
-        //keyboardActions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        singleLine = true,
-        maxLines = 1
+    val buttons = listOf(
+        listOf("7", "8", "9"),
+        listOf("4", "5", "6"),
+        listOf("1", "2", "3"),
+        listOf(",", "0", "C")
     )
-}
 
-//Función del título del Email
-@Composable
-fun TituloEmail(){
-    Text(text = "Correo Electrónico:")
-}
-
-//Cuadro de texto que solicita el Email
-@Composable
-fun CuadradoEmail(){
-    TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
-        placeholder = {Text("")},
-        //keyboardActions = KeyboardOptions(keyboardType = KeyboardType.Email),
-        singleLine = true,
-        maxLines = 1
-    )
-}
-//Función del título de la contraseña
-@Composable
-fun TituloPassword(){
-    Text(text = "Contraseña")
-}
-
-//Cuadro de texto que solicita la contraseña
-@Composable
-fun CuadradoPassword(){
-    TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
-        placeholder = {Text("")},
-        //keyboardActions = KeyboardOptions(keyboardType = KeyboardType.Email),
-        singleLine = true,
-        maxLines = 1
-    )
-}
-
-@Composable
-fun BotonCancelar(estadoNavegacion: NavController) {
-    Button(onClick = {estadoNavegacion.navigate("Login")},
-        modifier = Modifier
-            .width(80.dp)
-            .height(45.dp),
-        colors=ButtonDefaults.buttonColors(
-            containerColor = Color.Red,
-            disabledContainerColor = Color.Green,
-            contentColor = Color.White,
-            disabledContentColor = Color.Black
-        )) {
-        Text(text = "Cancelar")
+    buttons.forEach { row ->
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            row.forEach { number ->
+                CalculatorButton(number) {
+                    displayText.value += number
+                }
+            }
+        }
     }
 }
 
 @Composable
-fun BotonRegistrarse() {
+fun CalculatorButton(number: String, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .size(80.dp)
+            .background(
+                MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = number,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+fun BotonIngresar() {
     Button(onClick = {},
         modifier = Modifier
-            .width(80.dp)
-            .height(45.dp),
+            .width(120.dp)
+            .height(65.dp),
         colors=ButtonDefaults.buttonColors(
-            containerColor = Color.Red,
-            disabledContainerColor = Color.Green,
-            contentColor = Color.White,
-            disabledContentColor = Color.Black
+            containerColor = MaterialTheme.colorScheme.onError,
+            contentColor = Color.Black,
         )) {
-        Text(text = "Registrarse")
+        Text(
+            modifier =
+            Modifier.align(Alignment.CenterVertically),
+            text = "Realizar Ingreso"
+        )
     }
 }
-
 //Referencia práctica 3 de Jose Enrique
 @Composable
-private fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavController) {
+fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavController) {
     // Implement composable here
     NavigationBar(
         modifier = modifier,
@@ -227,7 +332,7 @@ private fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: N
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun PreviewPerfil(){
+fun PreviewIngresos(){
     val estadoNavegacion = rememberNavController()
     IngresosScreen(estadoNavegacion)
 }

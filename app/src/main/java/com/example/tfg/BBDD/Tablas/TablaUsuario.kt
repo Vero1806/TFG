@@ -35,7 +35,7 @@ class TablaUsuario() {
 
     fun obtenerUsuarios(usuario: Usuario): Usuario{
 
-        return Usuario("vero@gmail.com","Vero","1234")
+        return Usuario("vero@g.com","Vero","1234")
     }
 }
 
