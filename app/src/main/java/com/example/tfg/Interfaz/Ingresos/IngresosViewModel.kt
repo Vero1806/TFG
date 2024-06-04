@@ -18,24 +18,35 @@ class IngresosViewModel : ViewModel() {
     private val _categorias = mutableStateListOf<Categoria>()
     val categorias: List<Categoria> = _categorias.toList()
 
+    private val _listaNombresCategorias = mutableStateListOf<String>()
+    val listaNombresCategorias: List<String> = _listaNombresCategorias.toList()
 
     init {
         obtenerCuentas()
         obtenerCategorias()
     }
 
-    private fun obtenerCuentas() {
-        _cuentas.clear()
+    private fun obtenerCuentas(): List<Cuenta> {
         _cuentas.addAll(tablaUsuario.obtenerCuentas())
         actualizarListaNombresCuentas()
+        return cuentas
     }
 
     private fun actualizarListaNombresCuentas() {
-        _listaNombresCuentas.clear()
-        _listaNombresCuentas.addAll(_cuentas.map { it.nombreCuenta })
+        _cuentas.forEach { cuentas ->
+            _listaNombresCuentas.add(cuentas.nombreCuenta)
+        }
     }
-    private fun obtenerCategorias() {
-        _categorias.clear()
+
+    private fun obtenerCategorias(): List<Categoria> {
         _categorias.addAll(tablaUsuario.obtenerCategorias())
+        actualizarListaNombresCategorias()
+        return categorias
+    }
+
+    private fun actualizarListaNombresCategorias() {
+        _categorias.forEach { categorias ->
+            _listaNombresCategorias.add(categorias.nombreCategoria)
+        }
     }
 }

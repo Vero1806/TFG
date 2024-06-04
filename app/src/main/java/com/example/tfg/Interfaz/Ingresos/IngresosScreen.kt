@@ -44,13 +44,12 @@ fun IngresosScreen(estadoNavegacion: NavController, ingresosViewModel: IngresosV
     val textoCalculadora = rememberSaveable { mutableStateOf("") }
 
     val estadoExpansionCuentas = rememberSaveable { mutableStateOf(false) }
-    val seleccionarCuenta = rememberSaveable {
-        mutableStateOf(ingresosViewModel.cuentas.getOrNull(1)?.nombreCuenta ?: "")}
-    val nombresCuentas = rememberSaveable { mutableStateOf(ingresosViewModel.listaNombresCuentas) }
+    val seleccionarCuenta = rememberSaveable { mutableStateOf(ingresosViewModel.listaNombresCuentas.firstOrNull() ?: "") }
+    val nombresCuentas = ingresosViewModel.listaNombresCuentas
 
     val estadoExpansionCategorias = rememberSaveable { mutableStateOf(false) }
-
-    var seleccionarCategoria = rememberSaveable { mutableStateOf(ingresosViewModel.categorias.getOrNull(1) ?.nombreCategoria ?: "") }
+    val seleccionarCategoria = rememberSaveable { mutableStateOf(ingresosViewModel.listaNombresCategorias.firstOrNull() ?: "") }
+    val nombresCategoria = ingresosViewModel.listaNombresCategorias
 
     Scaffold(
         bottomBar = { NavigacionIferior(estadoNavegacion = estadoNavegacion) }
@@ -96,8 +95,8 @@ fun IngresosScreen(estadoNavegacion: NavController, ingresosViewModel: IngresosV
                 ){
                     tituloCategoria()
                     Spacer(modifier = Modifier.padding(8.dp))
-                    desplegableCategorias(estadoExpansionCategorias  = estadoExpansionCategorias,
-                        listaCategorias = ingresosViewModel.categorias.map { it.nombreCategoria},
+                    desplegableCategorias(estadoExpansionCategorias = estadoExpansionCategorias,
+                        nombresCategoria = nombresCategoria,
                         seleccionarCategoria = seleccionarCategoria)
                 }
                 Spacer(modifier = Modifier.padding(10.dp))
@@ -156,7 +155,7 @@ fun tituloCuenta() {
     }
 }
 @Composable
-fun desplegableCuentas(estadoExpansionCuentas: MutableState<Boolean>, nombresCuentas: MutableState<List<String>>, seleccionarCuenta: MutableState<String>) {
+fun desplegableCuentas(estadoExpansionCuentas: MutableState<Boolean>, nombresCuentas: List<String>, seleccionarCuenta: MutableState<String>) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -175,7 +174,7 @@ fun desplegableCuentas(estadoExpansionCuentas: MutableState<Boolean>, nombresCue
                         .wrapContentSize()
                 ) {
                     Column {
-                        nombresCuentas.value.forEach { item ->
+                        nombresCuentas.forEach { item ->
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -205,7 +204,7 @@ fun tituloCategoria() {
     }
 }
 @Composable
-fun desplegableCategorias(estadoExpansionCategorias: MutableState<Boolean>, listaCategorias: List<String>, seleccionarCategoria: MutableState<String>) {
+fun desplegableCategorias(estadoExpansionCategorias: MutableState<Boolean>, nombresCategoria: List<String>, seleccionarCategoria: MutableState<String>) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -224,7 +223,7 @@ fun desplegableCategorias(estadoExpansionCategorias: MutableState<Boolean>, list
                         .wrapContentSize()
                 ) {
                     Column {
-                        listaCategorias.forEach { item ->
+                        nombresCategoria.forEach { item ->
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -234,7 +233,11 @@ fun desplegableCategorias(estadoExpansionCategorias: MutableState<Boolean>, list
                                     }
                                     .padding(8.dp)
                             ) {
-                                Text(text = item, fontSize = 16.sp, color = MaterialTheme.colorScheme.surface)
+                                Text(
+                                    text = item,
+                                    fontSize = 16.sp,
+                                    color = MaterialTheme.colorScheme.surface
+                                )
                             }
                         }
                     }

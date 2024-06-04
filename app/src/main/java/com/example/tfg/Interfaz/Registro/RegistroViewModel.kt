@@ -46,14 +46,13 @@ class RegistroViewModel : ViewModel() {
     }
 
     fun registrarUsuario(context: Context) {
-        val url = "http://10.0.2.2/BaseDatosPHP/insertarUsuario.php"
+        val url = "https://localhost:7028/api/Usuarios/"
 
         val stringRequest = object : StringRequest(
             Request.Method.POST, url,
             Response.Listener<String> { response ->
                 try {
                     val obj = JSONObject(response)
-                    Toast.makeText(context, obj.getString("message"), Toast.LENGTH_LONG).show()
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
@@ -74,7 +73,6 @@ class RegistroViewModel : ViewModel() {
 
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest)
     }
-
     private fun emailValido(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()
     private fun contrasennaValida(password: String): Boolean = password.length > 4
 }

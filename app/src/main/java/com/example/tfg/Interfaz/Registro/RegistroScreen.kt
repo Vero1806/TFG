@@ -100,6 +100,7 @@ fun RegistroScreen(
         }
     }
 }
+
 //Función del Logotipo cambia el logo del diseño blanco al diseño negro dependiendo del modo del móvil
 @Composable
 fun Logo(){
@@ -117,7 +118,6 @@ fun Logo(){
         )
     }
 }
-
 
 @Composable
 fun TituloResgistro(){
