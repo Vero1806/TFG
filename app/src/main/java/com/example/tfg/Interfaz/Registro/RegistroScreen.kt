@@ -18,7 +18,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -93,8 +92,8 @@ fun RegistroScreen(
                 CuadradoPassword(password) { registroViewModel.onRegistroCambios(nombre, email, it) }
                 Spacer(modifier = Modifier.padding(15.dp))
                 BotonRegistrarse(registroHabilitado) {
-                    registroViewModel.registrarUsuario(context)
-                    estadoNavegacion.navigate("Categorias")
+                    registroViewModel.registrarUsuario()
+                    estadoNavegacion.navigate("Perfil")
                 }
             }
         }
@@ -191,22 +190,6 @@ fun CuadradoPassword(password: String, onTextFieldChanged: (String) -> Unit){
             }
         }
     )
-}
-
-@Composable
-fun BotonCancelar(estadoNavegacion: NavController) {
-    Button(onClick = {estadoNavegacion.navigate("Login")},
-        modifier = Modifier
-            .width(150.dp)
-            .height(45.dp),
-        colors=ButtonDefaults.buttonColors(
-            containerColor = Color.Red,
-            disabledContainerColor = Color.Green,
-            contentColor = Color.White,
-            disabledContentColor = Color.Black
-        )) {
-        Text(text = "Cancelar")
-    }
 }
 
 @Composable

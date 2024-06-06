@@ -4,10 +4,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.example.tfg.BBDD.Objetos.Categoria
 import com.example.tfg.BBDD.Objetos.Cuenta
-import com.example.tfg.BBDD.Tablas.TablaUsuario
+//import com.example.tfg.BBDD.Tablas.TablaUsuario
 
 class IngresosViewModel : ViewModel() {
-    private val tablaUsuario = TablaUsuario()
+    //private val tablaUsuario = TablaUsuario()
 
     private val _cuentas = mutableStateListOf<Cuenta>()
     val cuentas: List<Cuenta> = _cuentas.toList()
@@ -22,31 +22,31 @@ class IngresosViewModel : ViewModel() {
     val listaNombresCategorias: List<String> = _listaNombresCategorias.toList()
 
     init {
-        obtenerCuentas()
-        obtenerCategorias()
+//        obtenerCuentas()
+//        obtenerCategorias()
     }
 
-    private fun obtenerCuentas(): List<Cuenta> {
-        _cuentas.addAll(tablaUsuario.obtenerCuentas())
-        actualizarListaNombresCuentas()
-        return cuentas
-    }
-
-    private fun actualizarListaNombresCuentas() {
-        _cuentas.forEach { cuentas ->
-            _listaNombresCuentas.add(cuentas.nombreCuenta)
-        }
-    }
-
-    private fun obtenerCategorias(): List<Categoria> {
-        _categorias.addAll(tablaUsuario.obtenerCategorias())
-        actualizarListaNombresCategorias()
-        return categorias
-    }
-
-    private fun actualizarListaNombresCategorias() {
-        _categorias.forEach { categorias ->
-            _listaNombresCategorias.add(categorias.nombreCategoria)
-        }
-    }
+//    private fun obtenerCuentas(): List<Cuenta> {
+//        _cuentas.addAll(tablaUsuario.obtenerCuentas())
+//        actualizarListaNombresCuentas()
+//        return cuentas
+//    }
+//
+//    private fun actualizarListaNombresCuentas() {
+//        _cuentas.forEach { cuentas ->
+//            _listaNombresCuentas.add(cuentas.nombreCuenta)
+//        }
+//    }
+//
+//    private fun obtenerCategorias(): List<Categoria> {
+//        _categorias.addAll(tablaUsuario.obtenerCategorias())
+//        actualizarListaNombresCategorias()
+//        return categorias
+//    }
+//
+//    private fun actualizarListaNombresCategorias() {
+//        _categorias.forEach { categorias ->
+//            _listaNombresCategorias.add(categorias.nombreCategoria)
+//        }
+//    }
 }

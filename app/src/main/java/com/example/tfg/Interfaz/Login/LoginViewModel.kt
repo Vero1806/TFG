@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tfg.BBDD.Objetos.Usuario
-import com.example.tfg.BBDD.Tablas.TablaUsuario
+
 class LoginViewModel : ViewModel() {
 
     private val _email = MutableLiveData<String>()
@@ -29,25 +29,33 @@ class LoginViewModel : ViewModel() {
     }
 
     private fun validarColorLogin() {
-        _loginHabilitado.value = !(_email.value.isNullOrEmpty() || _password.value.isNullOrEmpty())
+        _loginHabilitado.value = !(_email.value.isNullOrEmpty() && _password.value.isNullOrEmpty())
     }
 
-    fun CogerUsuario(tablaUsuario: TablaUsuario): Boolean {
-        val user = Usuario(_email.value ?: "", "", _password.value ?: "")
-        val usuarioBaseDatos = tablaUsuario.obtenerUsuarios(user)
-        return if (usuarioBaseDatos != null) {
-            validarLogin(user, usuarioBaseDatos)
-        } else {
-            false
-        }
-    }
+//    fun CogerUsuario(tablaUsuario: usua): Boolean {
+//        val user = Usuario(_email.value ?: "", "", _password.value ?: "")
+//        val usuarioBaseDatos = tablaUsuario.obtenerUsuarios(user)
+//        return if (usuarioBaseDatos != null) {
+//            validarLogin(user, usuarioBaseDatos)
+//        } else {
+//            false
+//        }
+//    }
 
     private fun validarLogin(user: Usuario, usuarioBaseDatos: Usuario): Boolean {
         return user.correoUsuario == usuarioBaseDatos.correoUsuario && user.contrasenna == usuarioBaseDatos.contrasenna
     }
 
-    fun onLoginSeleccion(): Boolean {
-        val tablaUsuario = TablaUsuario()
-        return CogerUsuario(tablaUsuario)
-    }
+//    fun comprobarUsiario() {
+//        val comprobartUsuario = Usuario_tabla(
+//            correo_usuario = _email.value ?: "",
+//            contrasenna = _password.value ?: ""
+//        )
+//        usuarioDao.selectUsuariosPorCorreo()
+//    }
+
+//    fun onLoginSeleccion(): Boolean {
+//        val tablaUsuario = TablaUsuario()
+//        return CogerUsuario(tablaUsuario)
+//    }
 }

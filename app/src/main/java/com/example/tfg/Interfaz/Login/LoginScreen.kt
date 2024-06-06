@@ -72,9 +72,9 @@ fun LoginScreen(estadoNavegacion: NavController, loginviewModel: LoginViewModel 
             NuevoUsuario(estadoNavegacion = estadoNavegacion)
             Spacer(modifier = Modifier.padding(15.dp))
             BotonLogin(loginHabilitado) {
-                if (loginviewModel.onLoginSeleccion()){
-                    estadoNavegacion.navigate("Perfil")
-                }
+//                if (loginviewModel.onLoginSeleccion()){
+//                    estadoNavegacion.navigate("Perfil")
+//                }
             }
         }
     }

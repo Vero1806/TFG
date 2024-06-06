@@ -43,13 +43,13 @@ import com.example.tfg.R
 fun IngresosScreen(estadoNavegacion: NavController, ingresosViewModel: IngresosViewModel = viewModel()) {
     val textoCalculadora = rememberSaveable { mutableStateOf("") }
 
-    val estadoExpansionCuentas = rememberSaveable { mutableStateOf(false) }
-    val seleccionarCuenta = rememberSaveable { mutableStateOf(ingresosViewModel.listaNombresCuentas.firstOrNull() ?: "") }
-    val nombresCuentas = ingresosViewModel.listaNombresCuentas
+//    val estadoExpansionCategorias = rememberSaveable { mutableStateOf(false) }
+//    val seleccionarCategoria = rememberSaveable { mutableStateOf(ingresosViewModel.listaNombresCategorias.firstOrNull() ?: "") }
+//    val nombresCategoria = ingresosViewModel.listaNombresCategorias
 
-    val estadoExpansionCategorias = rememberSaveable { mutableStateOf(false) }
-    val seleccionarCategoria = rememberSaveable { mutableStateOf(ingresosViewModel.listaNombresCategorias.firstOrNull() ?: "") }
-    val nombresCategoria = ingresosViewModel.listaNombresCategorias
+    var estadoExpansionCategorias = rememberSaveable { mutableStateOf(false) }
+    val nombresCategoria = listOf("Hogar", "Alimentación", "Transporte", "Facturas", "Ocio")
+    var seleccionarCategoria = rememberSaveable { mutableStateOf(nombresCategoria[0]) }
 
     Scaffold(
         bottomBar = { NavigacionIferior(estadoNavegacion = estadoNavegacion) }
@@ -76,18 +76,6 @@ fun IngresosScreen(estadoNavegacion: NavController, ingresosViewModel: IngresosV
                     Logo()
                 }
                 Spacer(modifier = Modifier.padding(10.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    tituloCuenta()
-                    Spacer(modifier = Modifier.padding(8.dp))
-                    desplegableCuentas(estadoExpansionCuentas = estadoExpansionCuentas,
-                        nombresCuentas = nombresCuentas,
-                        seleccionarCuenta = seleccionarCuenta)
-                }
-                Spacer(modifier = Modifier.padding(8.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -143,54 +131,6 @@ fun tituloIngersoScreen() {
     Box(modifier = Modifier
         .padding(start = 15.dp)) {
         Text(text = "Nuevo Ingreso", fontSize = 30.sp, fontWeight = FontWeight.Bold)
-    }
-}
-@Composable
-fun tituloCuenta() {
-    Box(
-        modifier = Modifier
-            .padding(start = 15.dp)
-    ) {
-        Text(text = "Seleccionar Cuenta", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-    }
-}
-@Composable
-fun desplegableCuentas(estadoExpansionCuentas: MutableState<Boolean>, nombresCuentas: List<String>, seleccionarCuenta: MutableState<String>) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp),
-        contentAlignment = Alignment.TopCenter
-    ) {
-        Column {
-            Button(onClick = { estadoExpansionCuentas.value = true }) {
-                Text(text = seleccionarCuenta.value)
-            }
-            if (estadoExpansionCuentas.value) {
-                Box(
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.primary)
-                        .padding(5.dp)
-                        .wrapContentSize()
-                ) {
-                    Column {
-                        nombresCuentas.forEach { item ->
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable {
-                                        seleccionarCuenta.value = item
-                                        estadoExpansionCuentas.value = false
-                                    }
-                                    .padding(8.dp)
-                            ) {
-                                Text(text = item, fontSize = 16.sp, color = MaterialTheme.colorScheme.surface)
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 
@@ -347,7 +287,6 @@ fun BotonIngresar() {
         colors=ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.onError,
             contentColor = Color.White,
-            disabledContentColor = Color.Black
         )) {
         Box(
             modifier = Modifier
