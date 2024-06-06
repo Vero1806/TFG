@@ -47,9 +47,10 @@ fun IngresosScreen(estadoNavegacion: NavController, ingresosViewModel: IngresosV
 //    val seleccionarCategoria = rememberSaveable { mutableStateOf(ingresosViewModel.listaNombresCategorias.firstOrNull() ?: "") }
 //    val nombresCategoria = ingresosViewModel.listaNombresCategorias
 
-    var estadoExpansionCategorias = rememberSaveable { mutableStateOf(false) }
+    var estadoExpansionCategoria = rememberSaveable { mutableStateOf(false) }
     val nombresCategoria = listOf("Hogar", "Alimentación", "Transporte", "Facturas", "Ocio")
     var seleccionarCategoria = rememberSaveable { mutableStateOf(nombresCategoria[0]) }
+
 
     Scaffold(
         bottomBar = { NavigacionIferior(estadoNavegacion = estadoNavegacion) }
@@ -83,7 +84,7 @@ fun IngresosScreen(estadoNavegacion: NavController, ingresosViewModel: IngresosV
                 ){
                     tituloCategoria()
                     Spacer(modifier = Modifier.padding(8.dp))
-                    desplegableCategorias(estadoExpansionCategorias = estadoExpansionCategorias,
+                    desplegableCategorias(estadoExpansionCategorias = estadoExpansionCategoria,
                         nombresCategoria = nombresCategoria,
                         seleccionarCategoria = seleccionarCategoria)
                 }
@@ -97,7 +98,7 @@ fun IngresosScreen(estadoNavegacion: NavController, ingresosViewModel: IngresosV
                 Spacer(modifier = Modifier.padding(15.dp))
                 Column (modifier = Modifier.align(Alignment.End),
                     horizontalAlignment = Alignment.End) {
-                    BotonIngresar()
+                    BotonIngresar(estadoNavegacion = estadoNavegacion)
                 }
                 Spacer(modifier = Modifier.padding(10.dp))
             }
@@ -203,7 +204,6 @@ fun cuadradoTextoCalculadora(textoCalculadora: String) {
             ),
         contentAlignment = Alignment.Center,
 
-
     ) {
         Text(
             text = textoCalculadora,
@@ -278,14 +278,14 @@ fun botonUnicoCalculadora(number: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun BotonIngresar() {
-    Button(onClick = {},
+fun BotonIngresar( estadoNavegacion: NavController) {
+    Button(onClick = { estadoNavegacion.navigate("ConfirmacionCuentaIngreso") },
         modifier = Modifier
             .width(135.dp)
             .height(65.dp)
             .padding(end = 15.dp),
         colors=ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.onError,
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
             contentColor = Color.White,
         )) {
         Box(
@@ -302,6 +302,7 @@ fun BotonIngresar() {
         }
     }
 }
+
 //Referencia práctica 3 de Jose Enrique
 @Composable
 fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavController) {
@@ -341,6 +342,144 @@ fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavContro
             icon = { Icon(painter = painterResource(id = R.drawable.category), contentDescription = null) },
             label = { Text (text = "Categorias") }
         )
+    }
+}
+
+//Pantallas de confirmación
+
+@Composable
+fun boxConfirmacionCuentaIngreso(estadoNavegacion: NavController, ingresosViewModel: IngresosViewModel = viewModel()){
+    var estadoExpansionCuenta = rememberSaveable { mutableStateOf(false) }
+    val nombresCuenta = listOf("Personal", "Ahorros", "Compartida")
+    var seleccionarCuenta = rememberSaveable { mutableStateOf(nombresCuenta[0]) }
+    Box(
+        modifier = Modifier
+            .padding(end = 40.dp, start = 40.dp, top = 150.dp, bottom = 150.dp)
+            .background(
+                MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(8.dp)
+            ),
+        contentAlignment = Alignment.Center,
+    ){
+        Column (
+            modifier = Modifier
+                .align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally){
+
+            Text(
+                modifier = Modifier
+                    .padding(start= 20.dp),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                text = "¿A que cuenta desea realizar el ingreso?")
+
+            Spacer(modifier = Modifier.padding(15.dp))
+
+            Button(onClick = { estadoExpansionCuenta.value = true }) {
+                Text(text = seleccionarCuenta.value)
+            }
+            if (estadoExpansionCuenta.value) {
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.primary)
+                        .padding(5.dp)
+                        .wrapContentSize()
+                ) {
+                    Column {
+                        nombresCuenta.forEach { item ->
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        seleccionarCuenta.value = item
+                                        estadoExpansionCuenta.value = false
+                                    }
+                                    .padding(8.dp)
+                            ) {
+                                Text(
+                                    text = item,
+                                    fontSize = 16.sp,
+                                    color = MaterialTheme.colorScheme.surface
+                                )
+                            }
+                        }
+                    }
+
+                }
+            }
+            Spacer(modifier = Modifier.padding(15.dp))
+
+            Button(onClick = { estadoNavegacion.navigate("aceptacionIngreso") },
+                modifier = Modifier
+                    .width(135.dp)
+                    .height(65.dp),
+                colors=ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    contentColor = Color.White,
+                )) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(end = 7.dp, start = 7.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        text = "Realizar Ingreso"
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.padding(15.dp))
+        }
+    }
+}
+@Composable
+fun boxaceptacionIngreso(estadoNavegacion: NavController, ingresosViewModel: IngresosViewModel = viewModel()){
+    Box(
+        modifier = Modifier
+            .padding(end = 40.dp, start = 40.dp, top = 150.dp, bottom = 150.dp)
+            .background(
+                MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(8.dp)
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(
+                modifier = Modifier
+                    .padding(start = 20.dp),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                text = "Operación realizada con éxito"
+            )
+            Spacer(modifier = Modifier.padding(15.dp))
+
+            Button(onClick = { estadoNavegacion.navigate("Perfil") },
+                modifier = Modifier
+                    .width(135.dp)
+                    .height(65.dp),
+                ) {
+                Box(
+                    modifier = Modifier
+                    .background(MaterialTheme.colorScheme.primary)
+                    .padding(5.dp)
+                    .wrapContentSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        text = "Volver al perfil"
+                    )
+                }
+            }
+        }
     }
 }
 

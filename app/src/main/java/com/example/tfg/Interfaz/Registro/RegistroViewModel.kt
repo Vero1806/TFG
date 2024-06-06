@@ -1,17 +1,13 @@
 package com.example.tfg.Interfaz.Registro
-import android.content.Context
+//import com.android.volley.AuthFailureError
+//import com.android.volley.Request
+//import com.android.volley.Response
+//import com.android.volley.toolbox.StringRequest
+//import com.example.tfg.BBDD.VolleySingleton
 import android.util.Patterns
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android.volley.AuthFailureError
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.example.tfg.BBDD.VolleySingleton
-import org.json.JSONException
-import org.json.JSONObject
 
 class RegistroViewModel : ViewModel() {
 
@@ -45,33 +41,33 @@ class RegistroViewModel : ViewModel() {
         validarColorRegistro()
     }
 
-    fun registrarUsuario(context: Context) {
-        val url = "https://localhost:7028/api/Usuarios/"
-
-        val stringRequest = object : StringRequest(
-            Request.Method.POST, url,
-            Response.Listener<String> { response ->
-                try {
-                    val obj = JSONObject(response)
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            },
-            Response.ErrorListener { volleyError ->
-                Toast.makeText(context, volleyError.message, Toast.LENGTH_LONG).show()
-            }
-        ) {
-            @Throws(AuthFailureError::class)
-            override fun getParams(): Map<String, String> {
-                val parametros = HashMap<String, String>()
-                parametros["email"] = email.value ?: ""
-                parametros["nombre"] = nombre.value ?: ""
-                parametros["contrasenna"] = password.value ?: ""
-                return parametros
-            }
-        }
-
-        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest)
+    fun registrarUsuario() {
+//        val url = "https://localhost:7028/api/Usuarios/"
+//
+//        val stringRequest = object : StringRequest(
+//            Request.Method.POST, url,
+//            Response.Listener<String> { response ->
+//                try {
+//                    val obj = JSONObject(response)
+//                } catch (e: JSONException) {
+//                    e.printStackTrace()
+//                }
+//            },
+//            Response.ErrorListener { volleyError ->
+//                Toast.makeText(context, volleyError.message, Toast.LENGTH_LONG).show()
+//            }
+//        ) {
+//            @Throws(AuthFailureError::class)
+//            override fun getParams(): Map<String, String> {
+//                val parametros = HashMap<String, String>()
+//                parametros["email"] = email.value ?: ""
+//                parametros["nombre"] = nombre.value ?: ""
+//                parametros["contrasenna"] = password.value ?: ""
+//                return parametros
+//            }
+//        }
+//
+//        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest)
     }
     private fun emailValido(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()
     private fun contrasennaValida(password: String): Boolean = password.length > 4
