@@ -9,5 +9,5 @@ interface CuentaDao {
     fun obtenerCuentasPorUsuario(correoUsuario: String): List<Cuenta_tabla>
 
     @Insert
-    fun insertarCuenta(cuentaTabla: Cuenta_tabla)
+    suspend fun insertarCuenta(cuentaTabla: Cuenta_tabla)
 }

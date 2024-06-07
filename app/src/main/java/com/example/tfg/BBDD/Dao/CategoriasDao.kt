@@ -10,5 +10,5 @@ interface CategoriaDao {
     //fun obtenerTodasLasCategoriasDeUnaCuenta(): List<Categoria_tabla>
 
     @Insert
-    fun insertarCategoria(categoria_tabla: Categoria_tabla)
+    suspend fun insertarCategoria(categoria_tabla: Categoria_tabla)
 }

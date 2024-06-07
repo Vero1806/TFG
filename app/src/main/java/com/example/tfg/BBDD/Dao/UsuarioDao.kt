@@ -14,6 +14,6 @@ interface UsuarioDao {
     suspend fun selectUsuariosPorCorreo (correoUsuario: String): Usuario_tabla
 
     @Insert
-    fun insertarUsuario(usuario_tabla: Usuario_tabla)
+    suspend fun insertarUsuario(usuario_tabla: Usuario_tabla)
 }
 

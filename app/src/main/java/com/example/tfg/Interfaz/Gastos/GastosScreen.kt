@@ -297,7 +297,7 @@ fun BotonIngresar( estadoNavegacion: NavController) {
             .height(65.dp)
             .padding(end = 15.dp),
         colors=ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer,
+            containerColor = Color.Red,
             contentColor = Color.White,
         )) {
         Box(
@@ -326,15 +326,15 @@ fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavContro
 
         NavigationBarItem(
             selected = false,
-            onClick = { estadoNavegacion.navigate("Perfil")},
+            onClick = { estadoNavegacion.navigate("Perfil") },
             icon = { Icon(imageVector = Icons.Default.Person, contentDescription = null) },
             label = { Text (text = "Perfil") }
         )
         NavigationBarItem(
-            selected = true,
-            onClick = {  },
+            selected = false,
+            onClick = { estadoNavegacion.navigate("Ingresos") },
             icon = { Icon(painter = painterResource(id = R.drawable.more), contentDescription = null) },
-            label = { Text (text = "Ingreso") }
+            label = { Text (text = "Ingresos") }
         )
         NavigationBarItem(
             selected = false,
@@ -343,8 +343,8 @@ fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavContro
             label = { Text (text = "Cuentas") }
         )
         NavigationBarItem(
-            selected = false,
-            onClick = { estadoNavegacion.navigate("Gastos") },
+            selected = true,
+            onClick = {  },
             icon = { Icon(painter = painterResource(id = R.drawable.less), contentDescription = null) },
             label = { Text (text = "Gastos") }
         )
@@ -411,7 +411,7 @@ fun boxConfirmacionCuentaGasto(estadoNavegacion: NavController, ingresosViewMode
                                 Text(
                                     text = item,
                                     fontSize = 16.sp,
-                                    color = MaterialTheme.colorScheme.surface
+                                    color = Color.Red
                                 )
                             }
                         }

@@ -19,7 +19,7 @@ import com.example.tfg.Interfaz.Registro.RegistroScreen
 //Referencia https://www.youtube.com/watch?v=jMRTUGXnZ2s
 @Composable
 fun NavegacionApp(estadoNavegacion: NavHostController){
-    NavHost(navController = estadoNavegacion, startDestination = "Gastos"){
+    NavHost(navController = estadoNavegacion, startDestination = "Cuentas"){
         composable("login"){
             LoginScreen(estadoNavegacion)
         }

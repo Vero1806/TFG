@@ -44,9 +44,9 @@ class TablaUsuario() {
     fun obtenerCuentas(): List<Cuenta> {
 
         return listOf(
-            Cuenta(1, "Personal", 5000.0f),
-            Cuenta(2, "Ahorros", 10000.0f),
-            Cuenta(3, "Compartida", 15000.0f)
+            Cuenta(1, "Personal", 5000.0),
+            Cuenta(2, "Ahorros", 10000.0),
+            Cuenta(3, "Compartida", 15000.0)
         )
     }
     fun obtenerNombresCuentas(): List<String> {

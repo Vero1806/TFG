@@ -192,7 +192,6 @@ fun desplegableCategorias(estadoExpansionCategorias: MutableState<Boolean>, nomb
 @Composable
 fun cuadradoTextoCalculadora(textoCalculadora: String) {
 
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -285,7 +284,7 @@ fun BotonIngresar( estadoNavegacion: NavController) {
             .height(65.dp)
             .padding(end = 15.dp),
         colors=ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            containerColor = Color.Green,
             contentColor = Color.White,
         )) {
         Box(
@@ -414,7 +413,7 @@ fun boxConfirmacionCuentaIngreso(estadoNavegacion: NavController, ingresosViewMo
                     .width(135.dp)
                     .height(65.dp),
                 colors=ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    containerColor = Color.Green,
                     contentColor = Color.White,
                 )) {
                 Box(
