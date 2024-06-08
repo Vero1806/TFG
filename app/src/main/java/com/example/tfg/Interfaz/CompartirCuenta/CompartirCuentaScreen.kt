@@ -31,7 +31,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -55,7 +54,7 @@ fun CompartirCuentaScreen(
     compartirCuentaViewModel: CompartirCuentaViewModel = viewModel()
 ) {
 
-    val emailCompartirCuenta by compartirCuentaViewModel.emailCompartirCuenta.observeAsState(initial = "")
+    val emailCompartirCuenta = compartirCuentaViewModel.emailCompartirCuenta.observeAsState(initial = "")
 
     Scaffold(
         bottomBar = { NavigacionIferior(estadoNavegacion = estadoNavegacion) },
@@ -65,7 +64,7 @@ fun CompartirCuentaScreen(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Volver atrás",
-                        modifier = Modifier.clickable { estadoNavegacion.popBackStack() }
+                        modifier = Modifier.clickable  {estadoNavegacion.navigate("Cuentas") }
                     )
                 },
                 title = { Text(" ") }
@@ -98,12 +97,14 @@ fun CompartirCuentaScreen(
                 Spacer(modifier = Modifier.padding(15.dp))
                 explicacion2CompartirCuenta()
                 Spacer(modifier = Modifier.padding(10.dp))
-                CuadradoNombreCompatirCuenta(emailCompartirCuenta){
+                CuadradoNombreCompatirCuenta(emailCompartirCuenta.value){
                     compartirCuentaViewModel.actualizarNombreNuevaCuenta(it)
                 }
                 Spacer(modifier = Modifier.padding(15.dp))
-                botonConfirmarCompatirCuenta(estadoNavegacion = estadoNavegacion)
-                Spacer(modifier = Modifier.padding(5.dp))
+                botonConfirmarCompatirCuenta(estadoNavegacion = estadoNavegacion,
+                    emailCompartirCuenta = emailCompartirCuenta.value,
+                    compartirCuentaViewModel = compartirCuentaViewModel)
+                Spacer(modifier = Modifier.padding(15.dp))
             }
         }
     }
@@ -224,8 +225,16 @@ fun CuadradoNombreCompatirCuenta(emailCompartirCuenta: String, onTextFieldChange
 }
 
 @Composable
-fun botonConfirmarCompatirCuenta(estadoNavegacion: NavController){
-    Button(onClick = { estadoNavegacion.navigate("Perfil") },
+fun botonConfirmarCompatirCuenta(
+    estadoNavegacion: NavController,
+    compartirCuentaViewModel: CompartirCuentaViewModel = viewModel(),
+    emailCompartirCuenta: String,){
+    Button(onClick = {
+        if (compartirCuentaViewModel.emailCompatirValido(emailCompartirCuenta)) {
+        estadoNavegacion.navigate("confirmarCompatrirCuenta")
+    } else {
+        estadoNavegacion.navigate("emergenteErrorNocorreovalido")
+    }},
         modifier = Modifier
             .width(135.dp)
             .height(65.dp),
@@ -287,3 +296,109 @@ fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavContro
         )
     }
 }
+
+@Composable
+fun confirmarCompatrirCuenta (estadoNavegacion: NavController){
+    Box(
+        modifier = Modifier
+            .padding(end = 40.dp, start = 40.dp, top = 150.dp, bottom = 150.dp)
+            .background(
+                MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(8.dp)
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(
+                modifier = Modifier,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                text = "Cuenta compartida con éxito"
+            )
+            Spacer(modifier = Modifier.padding(15.dp))
+
+            Button(onClick = { estadoNavegacion.navigate("Perfil") },
+                modifier = Modifier
+                    .width(135.dp)
+                    .height(65.dp),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.primary)
+                        .padding(5.dp)
+                        .wrapContentSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column (
+                        modifier = Modifier
+                            .align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "Volver al")
+                        Text(text = "Perfil")
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun emergenteErrorNocorreovalido(estadoNavegacion: NavController){
+
+    Box(
+        modifier = Modifier
+            .padding(end = 40.dp, start = 40.dp, top = 150.dp, bottom = 150.dp)
+            .background(
+                MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(8.dp)
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(
+                modifier = Modifier
+                    .padding(start = 20.dp, end = 20.dp),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                text = "Error: El correo no está registrado en la aplicación"
+            )
+            Spacer(modifier = Modifier.padding(15.dp))
+
+            Button(onClick = { estadoNavegacion.navigate("CompartirCuenta") },
+                modifier = Modifier
+                    .width(135.dp)
+                    .height(65.dp),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.primary)
+                        .padding(5.dp)
+                        .wrapContentSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "Volver")
+                        Text(text = "atrás")
+                    }
+                }
+            }
+        }
+    }
+}
+
+

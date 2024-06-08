@@ -18,6 +18,6 @@ class CompartirCuentaViewModel: ViewModel() {
         _emailCompartirCuenta.value = nombreNuevaCuenta
     }
 
-    private fun emailCompatirValido(emailCompartirCuenta: String): Boolean
+    fun emailCompatirValido(emailCompartirCuenta: String): Boolean
     = Patterns.EMAIL_ADDRESS.matcher(emailCompartirCuenta).matches()
 }

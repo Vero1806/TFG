@@ -419,7 +419,7 @@ fun botonUnicoCalculadoraLimite(numeros: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun botonCrearNuevaCuneta2( estadoNavegacion: NavController) {
+fun botonCrearNuevaCuneta2 (estadoNavegacion: NavController) {
     Button(onClick = { estadoNavegacion.navigate("confirmarCrearCuenta") },
         modifier = Modifier
             .width(135.dp)
@@ -438,7 +438,7 @@ fun botonCrearNuevaCuneta2( estadoNavegacion: NavController) {
 }
 
 @Composable
-fun confirmarCrearCuenta(estadoNavegacion: NavController){
+fun confirmarCrearCuenta (estadoNavegacion: NavController){
     Box(
         modifier = Modifier
             .padding(end = 40.dp, start = 40.dp, top = 150.dp, bottom = 150.dp)
