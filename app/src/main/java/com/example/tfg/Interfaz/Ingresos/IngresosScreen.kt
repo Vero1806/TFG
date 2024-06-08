@@ -231,22 +231,26 @@ fun botonesCalculadora(textoCalculadora: MutableState<String>) {
     ) {
         buttons.forEach { row ->
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    //.padding(horizontal = 10.dp)
-                    .padding(vertical = 10.dp),
-
+                modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally)
             ) {
-                row.forEach { number ->
-                    botonUnicoCalculadora(number) {
-                        when (number) {
+                row.forEach { numeros ->
+                    botonUnicoCalculadora(numeros) {
+                        when (numeros) {
                             "C" -> {
                                 if (textoCalculadora.value.isNotEmpty()) {
                                     textoCalculadora.value = textoCalculadora.value.dropLast(1)
                                 }
                             }
-                            else -> textoCalculadora.value += number
+
+                            else -> {
+                                textoCalculadora.value += numeros
+                                // Convertir el texto a Double y enviar al ViewModel
+                                val numeroDouble = textoCalculadora.value.toDoubleOrNull()
+                                numeroDouble?.let {
+                                    ingresosViewModel.actualizarNumeroIngresado(it)
+                                }
+                            }
                         }
                     }
                 }
@@ -257,7 +261,7 @@ fun botonesCalculadora(textoCalculadora: MutableState<String>) {
 }
 
 @Composable
-fun botonUnicoCalculadora(number: String, onClick: () -> Unit) {
+fun botonUnicoCalculadora(numeros: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .size(80.dp)
@@ -269,7 +273,7 @@ fun botonUnicoCalculadora(number: String, onClick: () -> Unit) {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = number,
+            text = numeros,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
