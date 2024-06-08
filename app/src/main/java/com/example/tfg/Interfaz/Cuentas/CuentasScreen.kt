@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.tfg.BBDD.Objetos.Cuenta
 import com.example.tfg.R
@@ -51,8 +52,9 @@ import com.example.tfg.R
 fun CuentasScreen(estadoNavegacion: NavController, cuentasViewModel: CuentasViewModel = viewModel()) {
 
     val cuentas = cuentasViewModel.cuentas.observeAsState(emptyList())
-    val nombreNuevaCuenta = cuentasViewModel.nombreNuevaCuenta.observeAsState(initial = "")
-    val limiteNuevaCuenta = cuentasViewModel.limiteNuevaCuenta.observeAsState(initial = 0.0)
+    val nombreNuevaCuenta by cuentasViewModel.nombreNuevaCuenta.observeAsState(initial = "")
+    val limiteNuevaCuenta by cuentasViewModel.limiteNuevaCuenta.observeAsState(initial = " ")
+
     Scaffold(
         bottomBar = { NavigacionIferior(estadoNavegacion = estadoNavegacion) }
     ){ innerPadding ->
@@ -90,13 +92,9 @@ fun CuentasScreen(estadoNavegacion: NavController, cuentasViewModel: CuentasView
                 Row {
                     TituloNombreNuevaCuenta()
                     Spacer(modifier = Modifier.width(30.dp))
-                    CuadradoNombreNuevaCuenta(nombreNuevaCuenta)  { cuentasViewModel.registrarNuevaCuenta(it, limiteNuevaCuenta) }
-                }
-                Spacer(modifier = Modifier.padding(8.dp))
-                Row {
-                    TituloLimiteNuevaCuenta()
-                    Spacer(modifier = Modifier.width(30.dp))
-                    CuadradoLimiteNuevaCuenta(limiteNuevaCuenta) { cuentasViewModel.registrarNuevaCuenta(it, limiteNuevaCuenta) }
+                    CuadradoNombreNuevaCuenta(nombreNuevaCuenta) {
+                        cuentasViewModel.actualizarNombreNuevaCuenta(it)
+                    }
                 }
                 Spacer(modifier = Modifier.padding(25.dp))
                 Row {
@@ -176,38 +174,14 @@ fun TituloNombreNuevaCuenta(){
     }
 }
 
-
 @Composable
-fun CuadradoNombreNuevaCuenta(nombreNuevaCuenta: String, onTextFieldChanged: (String) -> Unit){
-    TextField(value = nombreNuevaCuenta, onValueChange = {onTextFieldChanged(it)},
+fun CuadradoNombreNuevaCuenta(nombreNuevaCuenta: String, onTextFieldChanged: (String) -> Unit) {
+    TextField(
+        value = nombreNuevaCuenta,
+        onValueChange = onTextFieldChanged,
         modifier = Modifier
             .fillMaxWidth()
-            .height(30.dp)
             .padding(end = 20.dp, start = 20.dp)
-            .background(
-                MaterialTheme.colorScheme.primaryContainer,
-                shape = RoundedCornerShape(8.dp)
-            ),
-        singleLine = true,
-        maxLines = 1
-    )
-}
-@Composable
-fun TituloLimiteNuevaCuenta(){
-    Box(modifier = Modifier
-        .padding(start = 15.dp, top = 5.dp)) {
-        Text(text = "Limite:", fontSize = 16.sp)
-    }
-}
-
-
-@Composable
-fun CuadradoLimiteNuevaCuenta(limiteNuevaCuenta: Double, onTextFieldChanged: (String) -> Unit){
-    TextField(value = limiteNuevaCuenta, onValueChange = {onTextFieldChanged(it)},
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(30.dp)
-            .padding(end = 20.dp, start = 33.dp)
             .background(
                 MaterialTheme.colorScheme.primaryContainer,
                 shape = RoundedCornerShape(8.dp)
@@ -241,7 +215,7 @@ fun BotonCompartirCuenta(estadoNavegacion: NavController) {
 
 @Composable
 fun BotonCrearNuevaCuenta(estadoNavegacion: NavController) {
-    Button(onClick = {},
+    Button(onClick = {estadoNavegacion.navigate("ElegirLimiteNuevaCuenta")},
         modifier = Modifier
             .width(135.dp)
             .height(65.dp),
@@ -302,6 +276,38 @@ private fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: N
 
     }
 }
+
+@Composable
+fun ElegirLimiteNuevaCuenta(estadoNavegacion: NavHostController, cuentasViewModel: CuentasViewModel = viewModel()) {
+
+
+@Composable
+fun TituloLimiteNuevaCuenta(estadoNavegacion: NavController){
+    Box(modifier = Modifier
+        .padding(start = 15.dp, top = 5.dp)) {
+        Text(text = "Limite:", fontSize = 16.sp)
+    }
+}
+
+@Composable
+fun CuadradoLimiteNuevaCuenta(limiteNuevaCuenta: Double, onTextFieldChanged: (String) -> Unit) {
+    val limiteEnLetras = limiteNuevaCuenta.toString()
+    TextField(
+        value = limiteEnLetras,
+        onValueChange = onTextFieldChanged,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(end = 20.dp, start = 33.dp)
+            .background(
+                MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(8.dp)
+            ),
+        singleLine = true,
+        maxLines = 1
+    )
+}
+}
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

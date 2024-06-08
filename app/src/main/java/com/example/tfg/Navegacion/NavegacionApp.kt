@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.tfg.Interfaz.Categorias.CategoriasScreen
 import com.example.tfg.Interfaz.Cuentas.CuentasScreen
+import com.example.tfg.Interfaz.Cuentas.ElegirLimiteNuevaCuenta
 import com.example.tfg.Interfaz.Gastos.GastosScreen
 import com.example.tfg.Interfaz.Gastos.boxConfirmacionCuentaGasto
 import com.example.tfg.Interfaz.Gastos.boxaceptacionGasto
@@ -40,6 +41,9 @@ fun NavegacionApp(estadoNavegacion: NavHostController){
         }
         composable("Cuentas"){
             CuentasScreen(estadoNavegacion)
+        }
+        composable("ElegirLimiteNuevaCuenta"){
+            ElegirLimiteNuevaCuenta(estadoNavegacion)
         }
         composable("Gastos"){
             GastosScreen(estadoNavegacion)

@@ -11,6 +11,7 @@ class CuentasViewModel : ViewModel() {
     val cuentas: LiveData<List<Cuenta>> get() = _cuentas
 
     private val _nombreNuevaCuenta = MutableLiveData<String>()
+
     val nombreNuevaCuenta: LiveData<String> get() = _nombreNuevaCuenta
 
     private val _limiteNuevaCuenta = MutableLiveData<Double>()
@@ -20,10 +21,9 @@ class CuentasViewModel : ViewModel() {
         _nombreNuevaCuenta.value = ""
         _limiteNuevaCuenta.value = 0.0
         valoresCuenta()
-        comprobarNumeroDeCuentas()
     }
 
-    fun valoresCuenta(){
+    fun valoresCuenta() {
         _cuentas.value = listOf(
             Cuenta(1, "Personal", 1000.0),
             Cuenta(2, "Ahorros", 2000.0),
@@ -31,18 +31,35 @@ class CuentasViewModel : ViewModel() {
         )
     }
 
-    fun registrarNuevaCuenta(nombreNuevaCuenta: String, limiteNuevaCuenta: Double){
-        _nombreNuevaCuenta.value = nombreNuevaCuenta
-        _limiteNuevaCuenta.value = limiteNuevaCuenta
-    }
-
-    fun comprobarNumeroDeCuentas() : Boolean {
-        val cuentas = _cuentas.value
-        return if (cuentas != null && cuentas.size > 1 && cuentas.size < 4) {
-            return true
-        } else {
-            false
+    fun registrarNuevaCuenta(nombreNuevaCuenta: String, limiteNuevaCuenta: Double) {
+        if (comprobarNumeroDeCuentas()) {
+            val cuentasActuales = _cuentas.value ?: emptyList()
+            val nombreNuevaCuenta = _nombreNuevaCuenta.value ?: ""
+            val limiteNuevaCuenta = _limiteNuevaCuenta.value?.toDouble() ?: 0.0
+            _cuentas.value = cuentasActuales + Cuenta(
+                cuentasActuales.size + 1,
+                nombreNuevaCuenta,
+                limiteNuevaCuenta
+            )
         }
     }
 
+    fun comprobarNumeroDeCuentas(): Boolean {
+        val cuentas = _cuentas.value
+        if (cuentas != null && cuentas.size > 0 && cuentas.size < 4) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    fun actualizarNombreNuevaCuenta(nombreNuevaCuenta: String) {
+        _nombreNuevaCuenta.value = nombreNuevaCuenta
+    }
+
+    fun actualizarLimteNuevaCuenta(limiteNuevaCuenta: Double) {
+        _limiteNuevaCuenta.value = limiteNuevaCuenta
+    }
 }
+
+
