@@ -5,8 +5,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.tfg.Interfaz.Categorias.CategoriasScreen
+import com.example.tfg.Interfaz.CompartirCuenta.CompartirCuentaScreen
 import com.example.tfg.Interfaz.Cuentas.CuentasScreen
 import com.example.tfg.Interfaz.Cuentas.ElegirLimiteNuevaCuenta
+import com.example.tfg.Interfaz.Cuentas.confirmarCrearCuenta
 import com.example.tfg.Interfaz.Cuentas.emergenteError
 import com.example.tfg.Interfaz.Gastos.GastosScreen
 import com.example.tfg.Interfaz.Gastos.boxConfirmacionCuentaGasto
@@ -48,6 +50,12 @@ fun NavegacionApp(estadoNavegacion: NavHostController){
         }
         composable("cajaError"){
             emergenteError(estadoNavegacion)
+        }
+        composable("confirmarCrearCuenta"){
+            confirmarCrearCuenta(estadoNavegacion)
+        }
+        composable("CompartirCuenta"){
+            CompartirCuentaScreen(estadoNavegacion)
         }
         composable("Gastos"){
             GastosScreen(estadoNavegacion)

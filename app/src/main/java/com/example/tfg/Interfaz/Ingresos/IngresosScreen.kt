@@ -91,9 +91,9 @@ fun IngresosScreen(estadoNavegacion: NavController, ingresosViewModel: IngresosV
                 Spacer(modifier = Modifier.padding(10.dp))
                 Column (
                     horizontalAlignment = Alignment.CenterHorizontally){
-                    cuadradoTextoCalculadora(textoCalculadora.value)
+                    cuadradoTextoCalculadoraIngreso(textoCalculadora.value)
                     Spacer(modifier = Modifier.padding(5.dp))
-                    botonesCalculadora(textoCalculadora)
+                    botonesCalculadoraIngreso(textoCalculadora)
                 }
                 Spacer(modifier = Modifier.padding(15.dp))
                 Column (modifier = Modifier.align(Alignment.End),
@@ -190,7 +190,7 @@ fun desplegableCategorias(estadoExpansionCategorias: MutableState<Boolean>, nomb
 
 
 @Composable
-fun cuadradoTextoCalculadora(textoCalculadora: String) {
+fun cuadradoTextoCalculadoraIngreso(textoCalculadora: String) {
 
     Box(
         modifier = Modifier
@@ -213,8 +213,7 @@ fun cuadradoTextoCalculadora(textoCalculadora: String) {
 }
 
 @Composable
-fun botonesCalculadora(textoCalculadora: MutableState<String>, ingresosViewModel: IngresosViewModel = viewModel()) {
-
+fun botonesCalculadoraIngreso(textoCalculadora: MutableState<String>, ingresosViewModel: IngresosViewModel = viewModel()) {
 
     val buttons = listOf(
         listOf("7", "8", "9"),
@@ -231,18 +230,19 @@ fun botonesCalculadora(textoCalculadora: MutableState<String>, ingresosViewModel
     ) {
         buttons.forEach { row ->
             Row(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally)
             ) {
                 row.forEach { numeros ->
-                    botonUnicoCalculadora(numeros) {
+                    botonUnicoCalculadoraIngreso(numeros) {
                         when (numeros) {
                             "C" -> {
                                 if (textoCalculadora.value.isNotEmpty()) {
                                     textoCalculadora.value = textoCalculadora.value.dropLast(1)
                                 }
                             }
-
                             else -> {
                                 textoCalculadora.value += numeros
                                 val numeroDouble = textoCalculadora.value.toDoubleOrNull()
@@ -254,13 +254,12 @@ fun botonesCalculadora(textoCalculadora: MutableState<String>, ingresosViewModel
                     }
                 }
             }
-            //Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
 
 @Composable
-fun botonUnicoCalculadora(numeros: String, onClick: () -> Unit) {
+fun botonUnicoCalculadoraIngreso(numeros: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .size(80.dp)
@@ -437,7 +436,7 @@ fun boxConfirmacionCuentaIngreso(estadoNavegacion: NavController, ingresosViewMo
     }
 }
 @Composable
-fun boxaceptacionIngreso(estadoNavegacion: NavController, ingresosViewModel: IngresosViewModel = viewModel()){
+fun boxaceptacionIngreso(estadoNavegacion: NavController){
     Box(
         modifier = Modifier
             .padding(end = 40.dp, start = 40.dp, top = 150.dp, bottom = 150.dp)
@@ -474,11 +473,13 @@ fun boxaceptacionIngreso(estadoNavegacion: NavController, ingresosViewModel: Ing
                     .wrapContentSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        text = "Volver al perfil"
-                    )
+                    Column (
+                        modifier = Modifier
+                            .align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "Volver al")
+                        Text(text = "Perfil")
+                    }
                 }
             }
         }

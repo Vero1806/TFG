@@ -1,13 +1,14 @@
 package com.example.tfg.Interfaz.Ingresos
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tfg.BBDD.Objetos.Categoria
 import com.example.tfg.BBDD.Objetos.Cuenta
-//import com.example.tfg.BBDD.Tablas.TablaUsuario
 
 class IngresosViewModel : ViewModel() {
-    //private val tablaUsuario = TablaUsuario()
+
 
     private val _cuentas = mutableStateListOf<Cuenta>()
     val cuentas: List<Cuenta> = _cuentas.toList()
@@ -21,15 +22,16 @@ class IngresosViewModel : ViewModel() {
     private val _listaNombresCategorias = mutableStateListOf<String>()
     val listaNombresCategorias: List<String> = _listaNombresCategorias.toList()
 
-    private var numeroIngresado: Double = 0.0
+    private val _numeroIngresado = MutableLiveData<Double>()
+    val numeroIngresado: LiveData<Double> get() = _numeroIngresado
 
     init {
-//        obtenerCuentas()
-//        obtenerCategorias()
+        _numeroIngresado.value = 0.0
+
     }
 
     fun actualizarNumeroIngresado(numero: Double){
-        numeroIngresado = numero
+        _numeroIngresado.value = numero
     }
 //    private fun obtenerCuentas(): List<Cuenta> {
 //        _cuentas.addAll(tablaUsuario.obtenerCuentas())

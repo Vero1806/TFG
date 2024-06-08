@@ -203,8 +203,6 @@ fun desplegableCategorias(estadoExpansionCategorias: MutableState<Boolean>, nomb
 
 @Composable
 fun cuadradoTextoCalculadora(textoCalculadora: String) {
-
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -227,8 +225,6 @@ fun cuadradoTextoCalculadora(textoCalculadora: String) {
 
 @Composable
 fun botonesCalculadora(textoCalculadora: MutableState<String>) {
-
-
     val buttons = listOf(
         listOf("7", "8", "9"),
         listOf("4", "5", "6"),
@@ -264,7 +260,6 @@ fun botonesCalculadora(textoCalculadora: MutableState<String>) {
                     }
                 }
             }
-            //Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
@@ -358,7 +353,6 @@ fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavContro
 }
 
 //Pantallas de confirmación
-
 @Composable
 fun boxConfirmacionCuentaGasto(estadoNavegacion: NavController, ingresosViewModel: IngresosViewModel = viewModel()){
     var estadoExpansionCuenta = rememberSaveable { mutableStateOf(false) }
@@ -411,7 +405,7 @@ fun boxConfirmacionCuentaGasto(estadoNavegacion: NavController, ingresosViewMode
                                 Text(
                                     text = item,
                                     fontSize = 16.sp,
-                                    color = Color.Red
+                                    color = MaterialTheme.colorScheme.surface
                                 )
                             }
                         }
@@ -426,7 +420,7 @@ fun boxConfirmacionCuentaGasto(estadoNavegacion: NavController, ingresosViewMode
                     .width(135.dp)
                     .height(65.dp),
                 colors=ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.errorContainer,
+                    containerColor = Color.Red,
                     contentColor = Color.White,
                 )) {
                 Box(
@@ -484,11 +478,13 @@ fun boxaceptacionGasto(estadoNavegacion: NavController, ingresosViewModel: Ingre
                         .wrapContentSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        text = "Volver al perfil"
-                    )
+                    Column (
+                        modifier = Modifier
+                            .align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "Volver al")
+                        Text(text = "Perfil")
+                    }
                 }
             }
         }

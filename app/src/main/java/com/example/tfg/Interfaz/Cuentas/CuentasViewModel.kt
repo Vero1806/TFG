@@ -11,7 +11,6 @@ class CuentasViewModel : ViewModel() {
     val cuentas: LiveData<List<Cuenta>> get() = _cuentas
 
     private val _nombreNuevaCuenta = MutableLiveData<String>()
-
     val nombreNuevaCuenta: LiveData<String> get() = _nombreNuevaCuenta
 
     private val _limiteNuevaCuenta = MutableLiveData<Double>()
@@ -21,6 +20,7 @@ class CuentasViewModel : ViewModel() {
         _nombreNuevaCuenta.value = ""
         _limiteNuevaCuenta.value = 0.0
         valoresCuenta()
+        comprobarNumeroDeCuentas()
     }
 
     fun valoresCuenta() {
@@ -45,8 +45,8 @@ class CuentasViewModel : ViewModel() {
     }
 
     fun comprobarNumeroDeCuentas(): Boolean {
-        val cuentas = _cuentas.value
-        if (cuentas != null && cuentas.size > 0 && cuentas.size < 4) {
+        val tamañoCuentas = _cuentas.value?.size
+        if (tamañoCuentas != null && tamañoCuentas > 0 && tamañoCuentas < 3) {
             return true
         } else {
             return false
@@ -57,8 +57,8 @@ class CuentasViewModel : ViewModel() {
         _nombreNuevaCuenta.value = nombreNuevaCuenta
     }
 
-    fun actualizarLimteNuevaCuenta(limiteNuevaCuenta: Double) {
-        _limiteNuevaCuenta.value = limiteNuevaCuenta
+    fun actualizarNumerolimite(numero: Double){
+        _limiteNuevaCuenta.value = numero
     }
 }
 
