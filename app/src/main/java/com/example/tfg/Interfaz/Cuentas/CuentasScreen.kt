@@ -19,7 +19,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -214,19 +213,24 @@ fun BotonCompartirCuenta(estadoNavegacion: NavController) {
 }
 
 @Composable
-fun BotonCrearNuevaCuenta(estadoNavegacion: NavController) {
-    Button(onClick = {estadoNavegacion.navigate("ElegirLimiteNuevaCuenta")},
+fun BotonCrearNuevaCuenta(estadoNavegacion: NavController, cuentasViewModel: CuentasViewModel = viewModel()) {
+    Button(
+        onClick = {
+            if (cuentasViewModel.comprobarNumeroDeCuentas()) {
+                estadoNavegacion.navigate("ElegirLimiteNuevaCuenta")
+            } else {
+                estadoNavegacion.navigate("cajaError")
+            }
+            },
         modifier = Modifier
             .width(135.dp)
             .height(65.dp),
-        colors=ButtonDefaults.buttonColors(
-
-        )) {
+       ){
         Box {
             Column (
                 modifier = Modifier
                     .align(Alignment.Center),
-                horizontalAlignment = Alignment.CenterHorizontally){
+                horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(text = "Crear nueva")
                 Text(text = "Cuenta")
             }
@@ -280,7 +284,11 @@ private fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: N
 @Composable
 fun ElegirLimiteNuevaCuenta(estadoNavegacion: NavHostController, cuentasViewModel: CuentasViewModel = viewModel()) {
 
+    Box(){
+        //meter aquí la calculadora de la ventana de gastos y arreglar cosas
 
+    }
+}
 @Composable
 fun TituloLimiteNuevaCuenta(estadoNavegacion: NavController){
     Box(modifier = Modifier
@@ -306,6 +314,14 @@ fun CuadradoLimiteNuevaCuenta(limiteNuevaCuenta: Double, onTextFieldChanged: (St
         maxLines = 1
     )
 }
+
+@Composable
+fun emergenteError(estadoNavegacion: NavController){
+
+    Box(){
+        //Cuadrado te texto emergente de que tienes demasiadas cuentas creas!!
+    }
+
 }
 
 

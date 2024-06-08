@@ -213,7 +213,7 @@ fun cuadradoTextoCalculadora(textoCalculadora: String) {
 }
 
 @Composable
-fun botonesCalculadora(textoCalculadora: MutableState<String>) {
+fun botonesCalculadora(textoCalculadora: MutableState<String>, ingresosViewModel: IngresosViewModel = viewModel()) {
 
 
     val buttons = listOf(
@@ -245,7 +245,6 @@ fun botonesCalculadora(textoCalculadora: MutableState<String>) {
 
                             else -> {
                                 textoCalculadora.value += numeros
-                                // Convertir el texto a Double y enviar al ViewModel
                                 val numeroDouble = textoCalculadora.value.toDoubleOrNull()
                                 numeroDouble?.let {
                                     ingresosViewModel.actualizarNumeroIngresado(it)

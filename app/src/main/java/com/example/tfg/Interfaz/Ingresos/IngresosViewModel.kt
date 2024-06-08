@@ -21,11 +21,16 @@ class IngresosViewModel : ViewModel() {
     private val _listaNombresCategorias = mutableStateListOf<String>()
     val listaNombresCategorias: List<String> = _listaNombresCategorias.toList()
 
+    private var numeroIngresado: Double = 0.0
+
     init {
 //        obtenerCuentas()
 //        obtenerCategorias()
     }
 
+    fun actualizarNumeroIngresado(numero: Double){
+        numeroIngresado = numero
+    }
 //    private fun obtenerCuentas(): List<Cuenta> {
 //        _cuentas.addAll(tablaUsuario.obtenerCuentas())
 //        actualizarListaNombresCuentas()
