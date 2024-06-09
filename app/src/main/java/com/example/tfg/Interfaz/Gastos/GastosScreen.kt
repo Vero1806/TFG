@@ -55,10 +55,6 @@ import com.example.tfg.R
 fun GastosScreen(estadoNavegacion: NavController, gastosViewModel: GastosViewModel = viewModel()) {
     val textoCalculadora = rememberSaveable { mutableStateOf("") }
 
-//    val estadoExpansionCategorias = rememberSaveable { mutableStateOf(false) }
-//    val seleccionarCategoria = rememberSaveable { mutableStateOf(ingresosViewModel.listaNombresCategorias.firstOrNull() ?: "") }
-//    val nombresCategoria = ingresosViewModel.listaNombresCategorias
-
     var estadoExpansionCategoria = rememberSaveable { mutableStateOf(false) }
     val nombresCategoria = listOf("Hogar", "Alimentación", "Transporte", "Facturas", "Ocio")
     var seleccionarCategoria = rememberSaveable { mutableStateOf(nombresCategoria[0]) }

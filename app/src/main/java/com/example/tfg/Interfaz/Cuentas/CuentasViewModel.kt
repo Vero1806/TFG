@@ -27,7 +27,7 @@ class CuentasViewModel : ViewModel() {
         _cuentas.value = listOf(
             Cuenta(1, "Personal", 1000.0),
             Cuenta(2, "Ahorros", 2000.0),
-            //Cuenta(3, "Compartida", 3000.0)
+            Cuenta(3, "Compartida", 3000.0)
         )
     }
 

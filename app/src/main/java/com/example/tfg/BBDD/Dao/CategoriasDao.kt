@@ -6,7 +6,7 @@ import androidx.room.Query
 import com.example.tfg.BBDD.tablas.Categoria_tabla
 
 @Dao
-interface CategoriaDao {
+interface CategoriasDao {
     @Query("SELECT * FROM Categoria_tabla WHERE id_cuenta = :id_cuenta")
     fun obtenerTodasLasCategoriasDeUnaCuenta(id_cuenta: Int): List<Categoria_tabla>
 

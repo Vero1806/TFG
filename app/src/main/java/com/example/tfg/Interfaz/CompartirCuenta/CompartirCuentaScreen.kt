@@ -4,8 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,11 +40,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.tfg.Interfaz.Cuentas.Logo
+import androidx.navigation.compose.rememberNavController
 import com.example.tfg.R
 
 
@@ -82,15 +85,16 @@ fun CompartirCuentaScreen(
                     .align(Alignment.Center),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    modifier = Modifier.align(Alignment.End),
-                    horizontalAlignment = Alignment.End
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
+                    tituloCompartirCuenta()
+                    Spacer(modifier = Modifier.width(10.dp))
                     Logo()
                 }
-                Spacer(modifier = Modifier.padding(15.dp))
-                tituloCompartirCuenta()
-                Spacer(modifier = Modifier.padding(15.dp))
+                Spacer(modifier = Modifier.padding(30.dp))
                 explicacion1CompartirCuenta()
                 Spacer(modifier = Modifier.padding(10.dp))
                 cuentaACompartir()
@@ -100,7 +104,7 @@ fun CompartirCuentaScreen(
                 CuadradoNombreCompatirCuenta(emailCompartirCuenta.value){
                     compartirCuentaViewModel.actualizarNombreNuevaCuenta(it)
                 }
-                Spacer(modifier = Modifier.padding(15.dp))
+                Spacer(modifier = Modifier.padding(20.dp))
                 botonConfirmarCompatirCuenta(estadoNavegacion = estadoNavegacion,
                     emailCompartirCuenta = emailCompartirCuenta.value,
                     compartirCuentaViewModel = compartirCuentaViewModel)
@@ -118,21 +122,24 @@ fun Logo() {
         if(isSystemInDarkTheme()){
             Image(
                 painter = painterResource(id = R.drawable.logo_dark_mode),
-                contentDescription = "Logo",
-                Modifier.size(250.dp)
+                contentDescription = "Logo"
             )
         }else {
             Image(
                 painter = painterResource(id = R.drawable.logo_light_mode),
-                contentDescription = "Logo",
-                Modifier.size(250.dp)
+                contentDescription = "Logo"
             )
         }
     }
 }
 @Composable
-fun tituloCompartirCuenta(){
-    Text(text = "Compartir Cuentas", fontSize = 30.sp, fontWeight = FontWeight.Bold)
+fun tituloCompartirCuenta() {
+    Box(
+        modifier = Modifier
+            .padding(start = 15.dp)
+    ) {
+        Text(text = "Compartir Cuentas", fontSize = 30.sp, fontWeight = FontWeight.Bold)
+    }
 }
 
 @Composable
@@ -142,8 +149,9 @@ fun explicacion1CompartirCuenta(){
             modifier = Modifier
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "Selecciona la cuenta", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-            Text(text = "que quieras compartir", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Selecciona la cuenta", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier .padding(3.dp))
+            Text(text = "que quieras compartir", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -201,7 +209,7 @@ fun explicacion2CompartirCuenta(){
                 .padding(start = 15.dp, end = 15.dp)
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "Introduce el correo electrónico de la persona con la que deseas compartir la cuenta", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Introduce el correo electrónico de la persona con la que deseas compartir la cuenta", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -296,6 +304,14 @@ fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavContro
         )
     }
 }
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PreviewCompartirCuentas(){
+    val estadoNavegacion = rememberNavController()
+    CompartirCuentaScreen(estadoNavegacion)
+}
+
 
 @Composable
 fun confirmarCompatrirCuenta (estadoNavegacion: NavController){

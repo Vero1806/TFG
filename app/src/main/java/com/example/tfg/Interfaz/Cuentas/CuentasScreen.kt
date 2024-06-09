@@ -74,11 +74,16 @@ fun CuentasScreen(estadoNavegacion: NavController, cuentasViewModel: CuentasView
                     .align(Alignment.Center),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column (modifier = Modifier.align(Alignment.End),
-                    horizontalAlignment = Alignment.End){
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    TituloMenuCuentas()
+                    Spacer(modifier = Modifier.width(16.dp))
                     Logo()
                 }
-                Spacer(modifier = Modifier.padding(15.dp))
+                Spacer(modifier = Modifier.padding(30.dp))
                 Row{
                     TituloTusCuentas()
                     Spacer(modifier = Modifier.width(30.dp))
@@ -112,7 +117,7 @@ fun CuentasScreen(estadoNavegacion: NavController, cuentasViewModel: CuentasView
     }
 }
 
-//Función del Logo
+//Función del Logo para tema claro y oscuro
 @Composable
 fun Logo() {
     Box(modifier = Modifier
@@ -121,27 +126,33 @@ fun Logo() {
         if(isSystemInDarkTheme()){
             Image(
                 painter = painterResource(id = R.drawable.logo_dark_mode),
-                contentDescription = "Logo",
-                Modifier.size(250.dp)
+                contentDescription = "Logo"
             )
         }else {
             Image(
                 painter = painterResource(id = R.drawable.logo_light_mode),
-                contentDescription = "Logo",
-                Modifier.size(250.dp)
+                contentDescription = "Logo"
             )
         }
     }
 }
 @Composable
+fun TituloMenuCuentas(){
+    Box(modifier = Modifier
+        .padding(start = 15.dp)) {
+        Text(text = "Cuentas", fontSize = 30.sp, fontWeight = FontWeight.Bold)
+    }
+}
+
+@Composable
 fun TituloTusCuentas(){
-    Text(text = "Tus cuentas", fontSize = 30.sp, fontWeight = FontWeight.Bold)
+    Text(text = "Tus cuentas", fontSize = 25.sp, fontWeight = FontWeight.Bold)
 }
 
 
 @Composable
 fun TituloLimites(){
-    Text(text = "Límites", fontSize = 30.sp, fontWeight = FontWeight.Bold)
+    Text(text = "Límites", fontSize = 25.sp, fontWeight = FontWeight.Bold)
 }
 
 @Composable
