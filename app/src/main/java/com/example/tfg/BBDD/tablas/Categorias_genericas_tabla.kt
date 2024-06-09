@@ -1,4 +1,4 @@
-package com.example.tfg.BBDD.tablas
+package com.example.tfg.BBDD.Tablas
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
