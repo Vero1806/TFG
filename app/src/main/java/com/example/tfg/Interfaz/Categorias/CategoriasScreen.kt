@@ -17,11 +17,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -54,11 +54,13 @@ import com.example.tfg.R
 @Composable
 fun CategoriasScreen(estadoNavegacion: NavController, categoriasViewModel: CategoriasViewModel = viewModel()) {
 
-    val categoriasCuenta1 by categoriasViewModel.categorias.collectAsState()
     val cuentas by categoriasViewModel.cuentas.collectAsState()
 
     var estadoExpansionCategoria = rememberSaveable { mutableStateOf(false) }
     var seleccionarCuenta = rememberSaveable { mutableStateOf(cuentas.firstOrNull()?.nombreCuenta ?: "") }
+
+    val cuentaSeleccionada = cuentas.find { it.nombreCuenta == seleccionarCuenta.value }
+    val categorias = cuentaSeleccionada?.let { categoriasViewModel.obtenerCategoriasPorCuenta(it.idCuenta) } ?: emptyList()
 
     Scaffold(
         bottomBar = { NavigacionIferior(estadoNavegacion = estadoNavegacion) }
@@ -67,7 +69,7 @@ fun CategoriasScreen(estadoNavegacion: NavController, categoriasViewModel: Categ
             Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(30.dp)
+                .padding(10.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -96,36 +98,36 @@ fun CategoriasScreen(estadoNavegacion: NavController, categoriasViewModel: Categ
                         nombresCategoria = cuentas.map { it.nombreCuenta },
                         seleccionarCategoria = seleccionarCuenta)
                 }
-                Spacer(modifier = Modifier.padding(8.dp))
-                botonRecargar(estadoNavegacion = estadoNavegacion)
                 Spacer(modifier = Modifier.padding(15.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
-                ){
-                    nombreCategoria()
-                    Spacer(modifier = Modifier.padding(5.dp))
-                    limiteCategoria()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .weight(2f)
+                            .padding(start = 20.dp)
+                    ) {
+                        nombreCategoria()
+                        listaNombresCategorias(categorias)
+                    }
+                    Column(
+                        modifier = Modifier
+                            .weight(2f)
+                            .padding(start = 20.dp)
+                    ) {
+                        limiteCategoria()
+                        listaLimitesCategorias(categorias)
+                    }
                 }
-                Spacer(modifier = Modifier.padding(8.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ){
-                    listaNombresCategorias(categoriasViewModel.obtenerCategoriasPorCuenta(1))
-                    Spacer(modifier = Modifier.padding(5.dp))
-                    listaLimitesCategorias(categoriasViewModel.obtenerCategoriasPorCuenta(1))
+                Spacer(modifier = Modifier.padding(25.dp))
+                Row {
+                    BotonAgregarCategoria(estadoNavegacion = estadoNavegacion)
+                    Spacer(modifier = Modifier.width(30.dp))
+                    BotonNuevoLimite(estadoNavegacion = estadoNavegacion)
                 }
-//                Row {
-//                    BotonCancelar(estadoNavegacion = estadoNavegacion)
-//                    Spacer(modifier = Modifier.width(10.dp))
-//                    BotonRegistrarse()
-//                    BotonCancelar(estadoNavegacion = estadoNavegacion)
-//                    Spacer(modifier = Modifier.width(10.dp))
-//                    BotonRegistrarse()
-//                }
+                Spacer(modifier = Modifier.padding(5.dp))
             }
         }
     }
@@ -155,8 +157,6 @@ fun Logo() {
 fun TituloCategorias() {
     Text(text = "Categorias", fontSize = 30.sp, fontWeight = FontWeight.Bold)
 }
-
-
 
 @Composable
 fun TituloCambiarCuentas(){
@@ -212,42 +212,14 @@ fun desplegableCuentas(
 }
 
 @Composable
-fun botonRecargar(estadoNavegacion: NavController) {
-    Button(onClick = { estadoNavegacion.navigate("Categorias") },
-        modifier = Modifier
-            .width(135.dp)
-            .height(65.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
-        )
-    ) {
-        Box(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.onPrimaryContainer)
-                .padding(5.dp)
-                .wrapContentSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                modifier = Modifier
-                    .align(Alignment.Center),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = "Cambiar")
-                Text(text = "Cuenta")
-            }
-        }
-    }
-}
-
-@Composable
 fun nombreCategoria(){
-    Text(text = "Nombre:", fontSize = 15.sp)
+    Text(text = "Nombre:", fontSize = 25.sp)
 }
 
 @Composable
 fun limiteCategoria(){
-    Text(text = "Limite", fontSize = 15.sp)
+    Text(text = "Limite: ", fontSize = 25.sp)
+
 }
 
 @Composable
@@ -255,7 +227,7 @@ fun listaNombresCategorias(listaCategorias: List<Categoria>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(20.dp)
     ) {
         listaCategorias.forEach { categoria ->
             Text(
@@ -272,7 +244,7 @@ fun listaLimitesCategorias(listaCategorias: List<Categoria>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(20.dp)
     ) {
         listaCategorias.forEach { categoria ->
             Text(
@@ -284,6 +256,51 @@ fun listaLimitesCategorias(listaCategorias: List<Categoria>) {
     }
 }
 
+
+
+@Composable
+fun BotonAgregarCategoria(estadoNavegacion: NavController) {
+    Button(
+        onClick = {
+            estadoNavegacion.navigate("AgregarCategoria")
+        },
+        modifier = Modifier
+            .width(135.dp)
+            .height(65.dp),
+    ){
+        Box {
+            Column (
+                modifier = Modifier
+                    .align(Alignment.Center),
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = "Agregar")
+                Text(text = "Categoría")
+            }
+        }
+    }
+}
+
+@Composable
+fun BotonNuevoLimite(estadoNavegacion: NavController) {
+    Button(
+        onClick = {
+                estadoNavegacion.navigate("CrearNuevaCuenta")
+        },
+        modifier = Modifier
+            .width(135.dp)
+            .height(65.dp),
+    ){
+        Box {
+            Column (
+                modifier = Modifier
+                    .align(Alignment.Center),
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = "Crear nueva")
+                Text(text = "Cuenta")
+            }
+        }
+    }
+}
 @Composable
 private fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavController) {
     // Implement composable here
@@ -324,6 +341,59 @@ private fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: N
         )
     }
 }
+@Composable
+fun emergenteError(estadoNavegacion: NavController){
+
+    Box(
+        modifier = Modifier
+            .padding(end = 40.dp, start = 40.dp, top = 150.dp, bottom = 150.dp)
+            .background(
+                MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(8.dp)
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(
+                modifier = Modifier
+                    .padding(start = 20.dp),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                text = "Error: tienes ya 3 cuentas activas"
+            )
+            Spacer(modifier = Modifier.padding(15.dp))
+
+            Button(onClick = { estadoNavegacion.navigate("Perfil") },
+                modifier = Modifier
+                    .width(135.dp)
+                    .height(65.dp),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.primary)
+                        .padding(5.dp)
+                        .wrapContentSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "Volver al")
+                        Text(text = "Perfil")
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

@@ -1,11 +1,13 @@
-package com.example.tfg.Interfaz.Categorias
+package com.example.tfg.Interfaz.AgregarCategoria
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tfg.BBDD.Objetos.Categoria
 import com.example.tfg.BBDD.Objetos.Cuenta
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class CategoriasViewModel : ViewModel() {
+class AgregarCategoriasViewModel : ViewModel() {
 
     private val _categorias = MutableStateFlow<List<Categoria>>(emptyList())
     val categorias: StateFlow<List<Categoria>> get() = _categorias
@@ -13,11 +15,21 @@ class CategoriasViewModel : ViewModel() {
     private val _cuentas = MutableStateFlow<List<Cuenta>>(emptyList())
     val cuentas: StateFlow<List<Cuenta>> get() = _cuentas
 
+    private val _nombreNuevaCategoria = MutableLiveData<String>()
+    val nombreNuevaCategoria: LiveData<String> get() = _nombreNuevaCategoria
+
     init {
-        obtenerListaDeCategorias()
         obtenerListaDeCuentas()
     }
 
+    private fun obtenerListaDeCuentas() {
+        val todasLasCuentas = listOf(
+            Cuenta(1, "Personal", 1000.0),
+            Cuenta(2, "Ahorros", 2000.0),
+            Cuenta(3, "Compartida", 3000.0)
+        )
+        _cuentas.value = todasLasCuentas
+    }
     private fun obtenerListaDeCategorias() {
         val todasLasCategorias = listOf(
             Categoria(idCategoria = 1, idCuenta = 1, nombreCategoria = "Alimentos", cantidadLimite = 500.0f),
@@ -31,23 +43,27 @@ class CategoriasViewModel : ViewModel() {
         )
         _categorias.value = todasLasCategorias
     }
-
-    private fun obtenerListaDeCuentas() {
-        val todasLasCuentas = listOf(
-            Cuenta(1, "Personal", 1000.0),
-            Cuenta(2, "Ahorros", 2000.0),
-            Cuenta(3, "Compartida", 3000.0)
-        )
-        _cuentas.value = todasLasCuentas
-    }
-
-    fun obtenerCategoriasPorCuenta(idCuenta: Int): List<Categoria> {
+    fun comprobarNombreCategoriaPorCuenta(nombreNuevaCategoria: String, idCuenta: Int): Boolean {
         val categoriasPorCuenta = mutableListOf<Categoria>()
+
         for (categoria in _categorias.value) {
             if (categoria.idCuenta == idCuenta) {
                 categoriasPorCuenta.add(categoria)
             }
         }
-        return categoriasPorCuenta
+
+        for (categoria in categoriasPorCuenta) {
+            if (categoria.nombreCategoria != nombreNuevaCategoria) {
+                return true
+            }
+        }
+        return false
     }
+
+
+
+    fun actualizarNombreNuevaCuenta(nombreNuevaCuenta: String) {
+        _nombreNuevaCategoria.value = nombreNuevaCuenta
+    }
+
 }

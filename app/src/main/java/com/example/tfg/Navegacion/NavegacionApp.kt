@@ -4,6 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.tfg.Interfaz.AgregarCategoria.AgregarCategoriaScreen
+import com.example.tfg.Interfaz.AgregarCategoria.confirmacionNuevaCategoria
+import com.example.tfg.Interfaz.AgregarCategoria.emergenteErrorAgregarCategoria
 import com.example.tfg.Interfaz.Categorias.CategoriasScreen
 import com.example.tfg.Interfaz.CompartirCuenta.CompartirCuentaScreen
 import com.example.tfg.Interfaz.CompartirCuenta.confirmarCompatrirCuenta
@@ -76,6 +79,15 @@ fun NavegacionApp(estadoNavegacion: NavHostController){
         }
         composable("Categorias"){
             CategoriasScreen(estadoNavegacion)
+        }
+        composable("AgregarCategoria"){
+            AgregarCategoriaScreen(estadoNavegacion)
+        }
+        composable("confirmacionNuevaCategoria"){
+            confirmacionNuevaCategoria(estadoNavegacion)
+        }
+        composable("emergenteErrorAgregarCategoria"){
+            emergenteErrorAgregarCategoria(estadoNavegacion)
         }
     }
 }

@@ -1,5 +1,5 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
-package com.example.tfg.Interfaz.Gastos
+package com.example.tfg.Interfaz.AgregarCategoria
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,7 +22,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,13 +29,16 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,34 +47,36 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.tfg.Interfaz.Ingresos.IngresosViewModel
 import com.example.tfg.R
 
 //Referencia: https://www.youtube.com/watch?v=EmUx8wgRxJw
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GastosScreen(estadoNavegacion: NavController, gastosViewModel: GastosViewModel = viewModel()) {
-    val textoCalculadora = rememberSaveable { mutableStateOf("") }
+fun AgregarCategoriaScreen(estadoNavegacion: NavController, agregarCategoriasViewModel: AgregarCategoriasViewModel = viewModel()) {
+
+    val nombreNuevaCategoria by agregarCategoriasViewModel.nombreNuevaCategoria.observeAsState("")
+
+    val cuentas by agregarCategoriasViewModel.cuentas.collectAsState()
 
     var estadoExpansionCategoria = rememberSaveable { mutableStateOf(false) }
-    val nombresCategoria = listOf("Hogar", "Alimentación", "Transporte", "Facturas", "Ocio")
-    var seleccionarCategoria = rememberSaveable { mutableStateOf(nombresCategoria[0]) }
+    var seleccionarCuenta = rememberSaveable { mutableStateOf(cuentas.firstOrNull()?.nombreCuenta ?: "") }
 
+    val textoCalculadora = rememberSaveable { mutableStateOf("") }
 
     Scaffold(
         bottomBar = { NavigacionIferior(estadoNavegacion = estadoNavegacion) }
-    ) { innerPadding ->
+    ){ innerPadding ->
         Box(
             Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(5.dp)
+                .padding(10.dp)
         ) {
             Column(
                 modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .align(Alignment.Center),
+                    .align(Alignment.Center)
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(
@@ -80,7 +84,7 @@ fun GastosScreen(estadoNavegacion: NavController, gastosViewModel: GastosViewMod
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    tituloIngersoScreen()
+                    TituloCategorias()
                     Spacer(modifier = Modifier.width(16.dp))
                     Logo()
                 }
@@ -90,12 +94,20 @@ fun GastosScreen(estadoNavegacion: NavController, gastosViewModel: GastosViewMod
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ){
-                    tituloCategoria()
+                    TituloElegirCuentas()
                     Spacer(modifier = Modifier.padding(8.dp))
-                    desplegableCategorias(estadoExpansionCategorias = estadoExpansionCategoria,
-                        nombresCategoria = nombresCategoria,
-                        seleccionarCategoria = seleccionarCategoria)
+                    desplegableCuentas(estadoExpansionCategorias = estadoExpansionCategoria,
+                        nombresCategoria = cuentas.map { it.nombreCuenta },
+                        seleccionarCategoria = seleccionarCuenta)
                 }
+                Spacer(modifier = Modifier.padding(15.dp))
+                TituloNombreNuevaCategoria()
+                Spacer(modifier = Modifier.padding(10.dp))
+                CuadradoNombreNuevaCategoria(nombreNuevaCategoria) {
+                    agregarCategoriasViewModel.actualizarNombreNuevaCuenta(it)
+                }
+                Spacer(modifier = Modifier.padding(10.dp))
+                TituloNombreNuevoLimiteCategoria()
                 Spacer(modifier = Modifier.padding(10.dp))
                 Column (
                     horizontalAlignment = Alignment.CenterHorizontally){
@@ -103,18 +115,18 @@ fun GastosScreen(estadoNavegacion: NavController, gastosViewModel: GastosViewMod
                     Spacer(modifier = Modifier.padding(5.dp))
                     botonesCalculadora(textoCalculadora)
                 }
-                Spacer(modifier = Modifier.padding(15.dp))
-                Column (modifier = Modifier.align(Alignment.End),
-                    horizontalAlignment = Alignment.End) {
-                    BotonIngresar(estadoNavegacion = estadoNavegacion)
-                }
-                Spacer(modifier = Modifier.padding(10.dp))
+                Spacer(modifier = Modifier.padding(25.dp))
+                botonAgregarCategoria(estadoNavegacion = estadoNavegacion,
+                    agregarCategoriasViewModel = agregarCategoriasViewModel,
+                    nombreNuevaCategoria = nombreNuevaCategoria,
+                    idCuenta = cuentas.find { it.nombreCuenta == seleccionarCuenta.value }?.idCuenta ?: -1
+                )
+                Spacer(modifier = Modifier.padding(5.dp))
             }
         }
     }
 }
 
-//Función del Logo
 @Composable
 fun Logo() {
     Box(modifier = Modifier
@@ -136,29 +148,26 @@ fun Logo() {
     }
 }
 @Composable
-fun tituloIngersoScreen() {
-    Box(modifier = Modifier
-        .padding(start = 15.dp)) {
-        Text(text = "Nuevo Gasto", fontSize = 30.sp, fontWeight = FontWeight.Bold)
-    }
+fun TituloCategorias() {
+    Text(text = "Nueva Categorias", fontSize = 30.sp, fontWeight = FontWeight.Bold)
 }
 
 @Composable
-fun tituloCategoria() {
-    Box(
-        modifier = Modifier
-            .padding(start = 15.dp)
-    ) {
-        Text(text = "Seleccionar Categoría", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-    }
+fun TituloElegirCuentas(){
+    Text(text = "Elegir Cuenta:", fontSize = 25.sp)
 }
+
 @Composable
-fun desplegableCategorias(estadoExpansionCategorias: MutableState<Boolean>, nombresCategoria: List<String>, seleccionarCategoria: MutableState<String>) {
+fun desplegableCuentas(
+    estadoExpansionCategorias: MutableState<Boolean>,
+    nombresCategoria: List<String>,
+    seleccionarCategoria: MutableState<String>
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp),
-        contentAlignment = Alignment.TopCenter
+        contentAlignment = Alignment.TopCenter,
     ) {
         Column {
             Button(onClick = { estadoExpansionCategorias.value = true }) {
@@ -197,11 +206,43 @@ fun desplegableCategorias(estadoExpansionCategorias: MutableState<Boolean>, nomb
 }
 
 @Composable
+fun TituloNombreNuevaCategoria(){
+    Box(modifier = Modifier
+        .padding(start = 15.dp, top = 25.dp)) {
+        Text(text = "Nombre nueva categoría:", fontSize = 18.sp)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CuadradoNombreNuevaCategoria(nombreNuevaCategoria: String, onTextFieldChanged: (String) -> Unit) {
+    TextField(
+        value = nombreNuevaCategoria,
+        onValueChange = onTextFieldChanged,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(end = 20.dp, start = 20.dp)
+            .background(
+                MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(8.dp)
+            ),
+        singleLine = true,
+        maxLines = 1
+    )
+}
+@Composable
+fun TituloNombreNuevoLimiteCategoria(){
+    Box(modifier = Modifier
+        .padding(start = 15.dp, top = 25.dp)) {
+        Text(text = "Limite de la nueva categoría:", fontSize = 18.sp)
+    }
+}
+@Composable
 fun cuadradoTextoCalculadora(textoCalculadora: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(85.dp)
+            .height(65.dp)
             .padding(end = 20.dp, start = 20.dp)
             .background(
                 MaterialTheme.colorScheme.primaryContainer,
@@ -212,8 +253,8 @@ fun cuadradoTextoCalculadora(textoCalculadora: String) {
         ) {
         Text(
             text = textoCalculadora,
-            fontSize = 32.sp,
-            modifier = Modifier.padding(16.dp)
+            fontSize = 20.sp,
+            modifier = Modifier.padding(20.dp)
         )
     }
 }
@@ -280,35 +321,40 @@ fun botonUnicoCalculadora(number: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun BotonIngresar( estadoNavegacion: NavController) {
-    Button(onClick = { estadoNavegacion.navigate("ConfirmacionCuentaGasto") },
+fun botonAgregarCategoria(
+    estadoNavegacion: NavController,
+    agregarCategoriasViewModel: AgregarCategoriasViewModel,
+    nombreNuevaCategoria: String,
+    idCuenta: Int) {
+    Button(
+        onClick = {
+            if (agregarCategoriasViewModel.comprobarNombreCategoriaPorCuenta(
+                    nombreNuevaCategoria,
+                    idCuenta
+                )
+            ) {
+                estadoNavegacion.navigate("confirmacionNuevaCategoria")
+            } else {
+                estadoNavegacion.navigate("emergenteErrorAgregarCategoria")
+            }
+        },
         modifier = Modifier
             .width(135.dp)
-            .height(65.dp)
-            .padding(end = 15.dp),
-        colors=ButtonDefaults.buttonColors(
-            containerColor = Color.Red,
-            contentColor = Color.White,
-        )) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(end = 5.dp, start = 7.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                text = "Realizar Gasto"
-            )
+            .height(65.dp),
+    ){
+        Box {
+            Column (
+                modifier = Modifier
+                    .align(Alignment.Center),
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = "Agregar")
+                Text(text = "Categoría")
+            }
         }
     }
 }
-
-//Referencia práctica 3 de Jose Enrique
 @Composable
-fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavController) {
-    // Implement composable here
+private fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavController) {
     NavigationBar(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.surface
@@ -316,7 +362,7 @@ fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavContro
 
         NavigationBarItem(
             selected = false,
-            onClick = { estadoNavegacion.navigate("Perfil") },
+            onClick = {estadoNavegacion.navigate("Perfil")},
             icon = { Icon(imageVector = Icons.Default.Person, contentDescription = null) },
             label = { Text (text = "Perfil") }
         )
@@ -324,7 +370,7 @@ fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavContro
             selected = false,
             onClick = { estadoNavegacion.navigate("Ingresos") },
             icon = { Icon(painter = painterResource(id = R.drawable.more), contentDescription = null) },
-            label = { Text (text = "Ingresos") }
+            label = { Text (text = "Ingreso") }
         )
         NavigationBarItem(
             selected = false,
@@ -333,110 +379,22 @@ fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavContro
             label = { Text (text = "Cuentas") }
         )
         NavigationBarItem(
-            selected = true,
-            onClick = {  },
+            selected = false,
+            onClick = { estadoNavegacion.navigate("Gastos") },
             icon = { Icon(painter = painterResource(id = R.drawable.less), contentDescription = null) },
             label = { Text (text = "Gastos") }
         )
         NavigationBarItem(
             selected = false,
-            onClick = { estadoNavegacion.navigate("Categorias") },
+            onClick = { "Categorias" },
             icon = { Icon(painter = painterResource(id = R.drawable.category), contentDescription = null) },
             label = { Text (text = "Categorias") }
         )
     }
 }
-
-//Pantallas de confirmación
 @Composable
-fun boxConfirmacionCuentaGasto(estadoNavegacion: NavController, ingresosViewModel: IngresosViewModel = viewModel()){
-    var estadoExpansionCuenta = rememberSaveable { mutableStateOf(false) }
-    val nombresCuenta = listOf("Personal", "Ahorros", "Compartida")
-    var seleccionarCuenta = rememberSaveable { mutableStateOf(nombresCuenta[0]) }
-    Box(
-        modifier = Modifier
-            .padding(end = 40.dp, start = 40.dp, top = 150.dp, bottom = 150.dp)
-            .background(
-                MaterialTheme.colorScheme.primaryContainer,
-                shape = RoundedCornerShape(8.dp)
-            ),
-        contentAlignment = Alignment.Center,
-    ){
-        Column (
-            modifier = Modifier
-                .align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally){
+fun confirmacionNuevaCategoria(estadoNavegacion: NavController){
 
-            Text(
-                modifier = Modifier
-                    .padding(start= 20.dp),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                text = "¿A que cuenta desea realizar el gasto?")
-
-            Spacer(modifier = Modifier.padding(15.dp))
-
-            Button(onClick = { estadoExpansionCuenta.value = true }) {
-                Text(text = seleccionarCuenta.value)
-            }
-            if (estadoExpansionCuenta.value) {
-                Box(
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.primary)
-                        .padding(5.dp)
-                        .wrapContentSize()
-                ) {
-                    Column {
-                        nombresCuenta.forEach { item ->
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable {
-                                        seleccionarCuenta.value = item
-                                        estadoExpansionCuenta.value = false
-                                    }
-                                    .padding(8.dp)
-                            ) {
-                                Text(
-                                    text = item,
-                                    fontSize = 16.sp,
-                                    color = MaterialTheme.colorScheme.surface
-                                )
-                            }
-                        }
-                    }
-
-                }
-            }
-            Spacer(modifier = Modifier.padding(15.dp))
-
-            Button(onClick = { estadoNavegacion.navigate("aceptacionIngreso") },
-                modifier = Modifier
-                    .width(135.dp)
-                    .height(65.dp),
-                colors=ButtonDefaults.buttonColors(
-                    containerColor = Color.Red,
-                    contentColor = Color.White,
-                )) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(end = 7.dp, start = 7.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        text = "Realizar Gasto"
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.padding(15.dp))
-        }
-    }
-}
-@Composable
-fun boxaceptacionGasto(estadoNavegacion: NavController, ingresosViewModel: IngresosViewModel = viewModel()){
     Box(
         modifier = Modifier
             .padding(end = 40.dp, start = 40.dp, top = 150.dp, bottom = 150.dp)
@@ -457,7 +415,7 @@ fun boxaceptacionGasto(estadoNavegacion: NavController, ingresosViewModel: Ingre
                     .padding(start = 20.dp),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                text = "Operación realizada con éxito"
+                text = "Categoría creada correctamente"
             )
             Spacer(modifier = Modifier.padding(15.dp))
 
@@ -473,10 +431,11 @@ fun boxaceptacionGasto(estadoNavegacion: NavController, ingresosViewModel: Ingre
                         .wrapContentSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Column (
+                    Column(
                         modifier = Modifier
                             .align(Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Text(text = "Volver al")
                         Text(text = "Perfil")
                     }
@@ -486,10 +445,62 @@ fun boxaceptacionGasto(estadoNavegacion: NavController, ingresosViewModel: Ingre
     }
 }
 
+@Composable
+fun emergenteErrorAgregarCategoria(estadoNavegacion: NavController){
+
+    Box(
+        modifier = Modifier
+            .padding(end = 40.dp, start = 40.dp, top = 150.dp, bottom = 150.dp)
+            .background(
+                MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(8.dp)
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(
+                modifier = Modifier
+                    .padding(start = 20.dp, end = 20.dp),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                text = "Error: el nombre de la categoría que quiere crear ya existe en esta cuenta"
+            )
+            Spacer(modifier = Modifier.padding(15.dp))
+
+            Button(onClick = { estadoNavegacion.navigate("Categorias") },
+                modifier = Modifier
+                    .width(135.dp)
+                    .height(65.dp),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.primary)
+                        .padding(5.dp)
+                        .wrapContentSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "Volver al")
+                        Text(text = "Atrás")
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewPerfil(){
     val estadoNavegacion = rememberNavController()
-    GastosScreen(estadoNavegacion)
+    AgregarCategoriaScreen(estadoNavegacion)
 }
