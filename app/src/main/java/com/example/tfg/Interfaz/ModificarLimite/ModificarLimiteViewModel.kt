@@ -1,13 +1,20 @@
-package com.example.tfg.Interfaz.AgregarCategoria
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+package com.example.tfg.Interfaz.ModificarLimite
+
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.tfg.BBDD.Objetos.Categoria
 import com.example.tfg.BBDD.Objetos.Cuenta
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-class AgregarCategoriasViewModel : ViewModel() {
+class ModificarLimiteViewModel : ViewModel() {
+
+
+    private val _listaNombresCategorias = mutableStateListOf<String>()
+    val listaNombresCategorias: List<String> = _listaNombresCategorias.toList()
+
 
     private val _categorias = MutableStateFlow<List<Categoria>>(emptyList())
     val categorias: StateFlow<List<Categoria>> get() = _categorias
@@ -15,22 +22,14 @@ class AgregarCategoriasViewModel : ViewModel() {
     private val _cuentas = MutableStateFlow<List<Cuenta>>(emptyList())
     val cuentas: StateFlow<List<Cuenta>> get() = _cuentas
 
-    private val _nombreNuevaCategoria = MutableLiveData<String>()
-    val nombreNuevaCategoria: LiveData<String> get() = _nombreNuevaCategoria
+    private val _categoriasPorCuenta = MutableStateFlow<List<Categoria>>(emptyList())
+    val categoriasPorCuenta: StateFlow<List<Categoria>> get() = _categoriasPorCuenta
 
     init {
-        obtenerListaDeCuentas()
         obtenerListaDeCategorias()
+        obtenerListaDeCuentas()
     }
 
-    private fun obtenerListaDeCuentas() {
-        val todasLasCuentas = listOf(
-            Cuenta(1, "Personal", 1000.0),
-            Cuenta(2, "Ahorros", 2000.0),
-            Cuenta(3, "Compartida", 3000.0)
-        )
-        _cuentas.value = todasLasCuentas
-    }
     private fun obtenerListaDeCategorias() {
         val todasLasCategorias = listOf(
             Categoria(idCategoria = 1, idCuenta = 1, nombreCategoria = "Alimentos", cantidadLimite = 500.0f),
@@ -44,19 +43,38 @@ class AgregarCategoriasViewModel : ViewModel() {
         )
         _categorias.value = todasLasCategorias
     }
-    fun comprobarNombreCategoriaPorCuenta(nombreNuevaCategoria: String, idCuenta: Int): Boolean {
+
+    private fun obtenerListaDeCuentas() {
+        val todasLasCuentas = listOf(
+            Cuenta(1, "Personal", 1000.0),
+            Cuenta(2, "Ahorros", 2000.0),
+            Cuenta(3, "Compartida", 3000.0)
+        )
+        _cuentas.value = todasLasCuentas
+    }
+
+    fun obtenerCategoriasPorCuenta(idCuenta: Int): List<Categoria> {
+        val categoriasPorCuenta = mutableListOf<Categoria>()
         for (categoria in _categorias.value) {
-            if (categoria.idCuenta == idCuenta && categoria.nombreCategoria == nombreNuevaCategoria) {
-                return false
+            if (categoria.idCuenta == idCuenta) {
+                categoriasPorCuenta.add(categoria)
             }
         }
-        return true
+        return categoriasPorCuenta
     }
 
+    fun seleccionarCuentaPorId(idCuenta: Int) {
+        viewModelScope.launch {
+            val categorias = obtenerCategoriasPorCuenta(idCuenta)
+            _categoriasPorCuenta.value = categorias
 
-
-    fun actualizarNombreNuevaCuenta(nombreNuevaCuenta: String) {
-        _nombreNuevaCategoria.value = nombreNuevaCuenta
+            val categoriasFiltradas = mutableListOf<Categoria>()
+            for (categoria in _categorias.value) {
+                if (categoria.idCuenta == idCuenta) {
+                    categoriasFiltradas.add(categoria)
+                }
+            }
+            _categoriasPorCuenta.value = categoriasFiltradas
+        }
     }
-
 }

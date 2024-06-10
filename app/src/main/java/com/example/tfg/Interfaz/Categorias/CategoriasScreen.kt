@@ -56,7 +56,7 @@ fun CategoriasScreen(estadoNavegacion: NavController, categoriasViewModel: Categ
 
     val cuentas by categoriasViewModel.cuentas.collectAsState()
 
-    var estadoExpansionCategoria = rememberSaveable { mutableStateOf(false) }
+    var estadoExpansionCuenta = rememberSaveable { mutableStateOf(false) }
     var seleccionarCuenta = rememberSaveable { mutableStateOf(cuentas.firstOrNull()?.nombreCuenta ?: "") }
 
     val cuentaSeleccionada = cuentas.find { it.nombreCuenta == seleccionarCuenta.value }
@@ -94,9 +94,9 @@ fun CategoriasScreen(estadoNavegacion: NavController, categoriasViewModel: Categ
                 ){
                     TituloCambiarCuentas()
                     Spacer(modifier = Modifier.padding(8.dp))
-                    desplegableCuentas(estadoExpansionCategorias = estadoExpansionCategoria,
-                        nombresCategoria = cuentas.map { it.nombreCuenta },
-                        seleccionarCategoria = seleccionarCuenta)
+                    desplegableCuentas(estadoExpansionCuenta = estadoExpansionCuenta,
+                        nombresCuenta = cuentas.map { it.nombreCuenta },
+                        seleccionarCuenta = seleccionarCuenta)
                 }
                 Spacer(modifier = Modifier.padding(15.dp))
                 Row(
@@ -165,9 +165,9 @@ fun TituloCambiarCuentas(){
 
 @Composable
 fun desplegableCuentas(
-    estadoExpansionCategorias: MutableState<Boolean>,
-    nombresCategoria: List<String>,
-    seleccionarCategoria: MutableState<String>
+    estadoExpansionCuenta: MutableState<Boolean>,
+    nombresCuenta: List<String>,
+    seleccionarCuenta: MutableState<String>
 ) {
     Box(
         modifier = Modifier
@@ -176,10 +176,10 @@ fun desplegableCuentas(
         contentAlignment = Alignment.TopCenter
     ) {
         Column {
-            Button(onClick = { estadoExpansionCategorias.value = true }) {
-                Text(text = seleccionarCategoria.value)
+            Button(onClick = { estadoExpansionCuenta.value = true }) {
+                Text(text = seleccionarCuenta.value)
             }
-            if (estadoExpansionCategorias.value) {
+            if (estadoExpansionCuenta.value) {
                 Box(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.primary)
@@ -187,13 +187,13 @@ fun desplegableCuentas(
                         .wrapContentSize()
                 ) {
                     Column {
-                        nombresCategoria.forEach { item ->
+                        nombresCuenta.forEach { item ->
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-                                        seleccionarCategoria.value = item
-                                        estadoExpansionCategorias.value = false
+                                        seleccionarCuenta.value = item
+                                        estadoExpansionCuenta.value = false
                                     }
                                     .padding(8.dp)
                             ) {
@@ -284,7 +284,7 @@ fun BotonAgregarCategoria(estadoNavegacion: NavController) {
 fun BotonNuevoLimite(estadoNavegacion: NavController) {
     Button(
         onClick = {
-                estadoNavegacion.navigate("CrearNuevaCuenta")
+                estadoNavegacion.navigate("ModificarLimiteScreen")
         },
         modifier = Modifier
             .width(135.dp)
@@ -295,8 +295,8 @@ fun BotonNuevoLimite(estadoNavegacion: NavController) {
                 modifier = Modifier
                     .align(Alignment.Center),
                 horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "Crear nueva")
-                Text(text = "Cuenta")
+                Text(text = "Modificar")
+                Text(text = "Limite")
             }
         }
     }

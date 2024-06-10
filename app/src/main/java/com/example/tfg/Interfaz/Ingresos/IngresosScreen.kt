@@ -43,14 +43,9 @@ import com.example.tfg.R
 fun IngresosScreen(estadoNavegacion: NavController, ingresosViewModel: IngresosViewModel = viewModel()) {
     val textoCalculadora = rememberSaveable { mutableStateOf("") }
 
-//    val estadoExpansionCategorias = rememberSaveable { mutableStateOf(false) }
-//    val seleccionarCategoria = rememberSaveable { mutableStateOf(ingresosViewModel.listaNombresCategorias.firstOrNull() ?: "") }
-//    val nombresCategoria = ingresosViewModel.listaNombresCategorias
-
-    var estadoExpansionCategoria = rememberSaveable { mutableStateOf(false) }
-    val nombresCategoria = listOf("Hogar", "Alimentación", "Transporte", "Facturas", "Ocio")
-    var seleccionarCategoria = rememberSaveable { mutableStateOf(nombresCategoria[0]) }
-
+    var estadoExpansionCuenta = rememberSaveable { mutableStateOf(false) }
+    val nombresCuenta = listOf("Personal", "Ahorros", "Compartida")
+    var seleccionarCuenta = rememberSaveable { mutableStateOf(nombresCuenta[0]) }
 
     Scaffold(
         bottomBar = { NavigacionIferior(estadoNavegacion = estadoNavegacion) }
@@ -84,9 +79,9 @@ fun IngresosScreen(estadoNavegacion: NavController, ingresosViewModel: IngresosV
                 ){
                     tituloCategoria()
                     Spacer(modifier = Modifier.padding(8.dp))
-                    desplegableCategorias(estadoExpansionCategorias = estadoExpansionCategoria,
-                        nombresCategoria = nombresCategoria,
-                        seleccionarCategoria = seleccionarCategoria)
+                    desplegableCuentas(estadoExpansionCuenta = estadoExpansionCuenta,
+                        nombresCuenta = nombresCuenta,
+                        seleccionarCuenta = seleccionarCuenta)
                 }
                 Spacer(modifier = Modifier.padding(10.dp))
                 Column (
@@ -141,11 +136,12 @@ fun tituloCategoria() {
         modifier = Modifier
             .padding(start = 15.dp)
     ) {
-        Text(text = "Seleccionar Categoría", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Text(text = "Seleccionar Cuenta", fontSize = 16.sp, fontWeight = FontWeight.Bold)
     }
 }
+
 @Composable
-fun desplegableCategorias(estadoExpansionCategorias: MutableState<Boolean>, nombresCategoria: List<String>, seleccionarCategoria: MutableState<String>) {
+fun desplegableCuentas(estadoExpansionCuenta: MutableState<Boolean>, nombresCuenta: List<String>, seleccionarCuenta: MutableState<String>) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -153,10 +149,10 @@ fun desplegableCategorias(estadoExpansionCategorias: MutableState<Boolean>, nomb
         contentAlignment = Alignment.TopCenter
     ) {
         Column {
-            Button(onClick = { estadoExpansionCategorias.value = true }) {
-                Text(text = seleccionarCategoria.value)
+            Button(onClick = { estadoExpansionCuenta.value = true }) {
+                Text(text = seleccionarCuenta.value)
             }
-            if (estadoExpansionCategorias.value) {
+            if (estadoExpansionCuenta.value) {
                 Box(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.primary)
@@ -164,13 +160,13 @@ fun desplegableCategorias(estadoExpansionCategorias: MutableState<Boolean>, nomb
                         .wrapContentSize()
                 ) {
                     Column {
-                        nombresCategoria.forEach { item ->
+                        nombresCuenta.forEach { item ->
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-                                        seleccionarCategoria.value = item
-                                        estadoExpansionCategorias.value = false
+                                        seleccionarCuenta.value = item
+                                        estadoExpansionCuenta.value = false
                                     }
                                     .padding(8.dp)
                             ) {
@@ -182,8 +178,10 @@ fun desplegableCategorias(estadoExpansionCategorias: MutableState<Boolean>, nomb
                             }
                         }
                     }
+
                 }
             }
+
         }
     }
 }
@@ -350,9 +348,9 @@ fun NavigacionIferior(modifier: Modifier = Modifier, estadoNavegacion: NavContro
 
 @Composable
 fun boxConfirmacionCuentaIngreso(estadoNavegacion: NavController, ingresosViewModel: IngresosViewModel = viewModel()){
-    var estadoExpansionCuenta = rememberSaveable { mutableStateOf(false) }
-    val nombresCuenta = listOf("Personal", "Ahorros", "Compartida")
-    var seleccionarCuenta = rememberSaveable { mutableStateOf(nombresCuenta[0]) }
+    var estadoExpansionCategoria = rememberSaveable { mutableStateOf(false) }
+    val nombresCategoria = listOf("Hogar", "Alimentación", "Transporte", "Facturas", "Ocio")
+    var seleccionarCategoria = rememberSaveable { mutableStateOf(nombresCategoria[0]) }
     Box(
         modifier = Modifier
             .padding(end = 40.dp, start = 40.dp, top = 150.dp, bottom = 150.dp)
@@ -372,14 +370,14 @@ fun boxConfirmacionCuentaIngreso(estadoNavegacion: NavController, ingresosViewMo
                     .padding(start= 20.dp),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                text = "¿A que cuenta desea realizar el ingreso?")
+                text = "¿A que categoría desea realizar el ingreso?")
 
             Spacer(modifier = Modifier.padding(15.dp))
 
-            Button(onClick = { estadoExpansionCuenta.value = true }) {
-                Text(text = seleccionarCuenta.value)
+            Button(onClick = { estadoExpansionCategoria.value = true }) {
+                Text(text = seleccionarCategoria.value)
             }
-            if (estadoExpansionCuenta.value) {
+            if (estadoExpansionCategoria.value) {
                 Box(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.primary)
@@ -387,13 +385,13 @@ fun boxConfirmacionCuentaIngreso(estadoNavegacion: NavController, ingresosViewMo
                         .wrapContentSize()
                 ) {
                     Column {
-                        nombresCuenta.forEach { item ->
+                        nombresCategoria.forEach { item ->
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-                                        seleccionarCuenta.value = item
-                                        estadoExpansionCuenta.value = false
+                                        seleccionarCategoria.value = item
+                                        estadoExpansionCategoria.value = false
                                     }
                                     .padding(8.dp)
                             ) {
@@ -405,7 +403,6 @@ fun boxConfirmacionCuentaIngreso(estadoNavegacion: NavController, ingresosViewMo
                             }
                         }
                     }
-
                 }
             }
             Spacer(modifier = Modifier.padding(15.dp))

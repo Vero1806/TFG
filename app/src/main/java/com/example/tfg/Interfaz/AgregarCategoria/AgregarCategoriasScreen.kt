@@ -115,7 +115,7 @@ fun AgregarCategoriaScreen(estadoNavegacion: NavController, agregarCategoriasVie
                     Spacer(modifier = Modifier.padding(5.dp))
                     botonesCalculadora(textoCalculadora)
                 }
-                Spacer(modifier = Modifier.padding(25.dp))
+                Spacer(modifier = Modifier.padding(20.dp))
                 botonAgregarCategoria(estadoNavegacion = estadoNavegacion,
                     agregarCategoriasViewModel = agregarCategoriasViewModel,
                     nombreNuevaCategoria = nombreNuevaCategoria,
@@ -500,7 +500,7 @@ fun emergenteErrorAgregarCategoria(estadoNavegacion: NavController){
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun PreviewPerfil(){
+fun PreviewAgregarCategorias(){
     val estadoNavegacion = rememberNavController()
     AgregarCategoriaScreen(estadoNavegacion)
 }

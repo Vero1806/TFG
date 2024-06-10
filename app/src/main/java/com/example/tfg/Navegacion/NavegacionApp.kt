@@ -22,6 +22,8 @@ import com.example.tfg.Interfaz.Ingresos.IngresosScreen
 import com.example.tfg.Interfaz.Ingresos.boxConfirmacionCuentaIngreso
 import com.example.tfg.Interfaz.Ingresos.boxaceptacionIngreso
 import com.example.tfg.Interfaz.Login.LoginScreen
+import com.example.tfg.Interfaz.ModificarLimite.ModificarLimiteScreen
+import com.example.tfg.Interfaz.ModificarLimite.confirmacionNuevoLimite
 import com.example.tfg.Interfaz.Perfil.PerfilScreen
 import com.example.tfg.Interfaz.Registro.RegistroScreen
 
@@ -88,6 +90,12 @@ fun NavegacionApp(estadoNavegacion: NavHostController){
         }
         composable("emergenteErrorAgregarCategoria"){
             emergenteErrorAgregarCategoria(estadoNavegacion)
+        }
+        composable("ModificarLimiteScreen"){
+            ModificarLimiteScreen(estadoNavegacion)
+        }
+        composable("confirmacionNuevoLimite"){
+            confirmacionNuevoLimite(estadoNavegacion)
         }
     }
 }
