@@ -3,6 +3,7 @@ package com.example.tfg.Interfaz.Perfil
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -64,8 +66,7 @@ fun PerfilScreen(estadoNavegacion: NavController, perfilViewModel: PerfilViewMod
         perfilViewModel.obtenerTransaccionesPorCategorias(it.idCuenta) } ?: emptyMap()
 
     val limitesPorCategoria = cuentaSeleccionada?.let {
-        perfilViewModel.obtenerLimitesPorCategoria(it.idCuenta)
-    } ?: emptyMap()
+        perfilViewModel.obtenerLimitesPorCategoria(it.idCuenta) } ?: emptyMap()
 
     Scaffold(
         bottomBar = { NavigacionIferior(estadoNavegacion = estadoNavegacion) }
@@ -74,11 +75,12 @@ fun PerfilScreen(estadoNavegacion: NavController, perfilViewModel: PerfilViewMod
             Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(30.dp)
+                .padding(5.dp)
         ) {
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
+                    .horizontalScroll(rememberScrollState())
                     .align(Alignment.Center),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -97,14 +99,46 @@ fun PerfilScreen(estadoNavegacion: NavController, perfilViewModel: PerfilViewMod
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ){
-                desplegableCuentas(
-                    estadoExpansionCuenta = estadoExpansionCuenta,
-                    nombresCuenta = cuentas.map { it.nombreCuenta },
-                    seleccionarCuenta = seleccionarCuenta)
+                    TituloCambiarCuentas()
+                    Spacer(modifier = Modifier.width(8.dp))
+                    desplegableCuentas(estadoExpansionCuenta = estadoExpansionCuenta,
+                        nombresCuenta = cuentas.map { it.nombreCuenta },
+                        seleccionarCuenta = seleccionarCuenta)
                 }
-                listaTransaccionesPorCategorias(
-                    transaccionesPorCategorias = transaccionesPorCategorias,
-                    limitesPorCategoria = limitesPorCategoria)
+
+                Spacer(modifier = Modifier.padding(10.dp))
+
+//                MostrarCuentaSeleccionadaYLimite(
+//                    cuentaSeleccionada = cuentaSeleccionada,
+//                    seleccionarCuenta = seleccionarCuenta,
+//                    perfilViewModel = perfilViewModel)
+
+                Spacer(modifier = Modifier.padding(15.dp))
+
+                Row{
+                    TituloCategorias()
+                    Spacer(modifier = Modifier.width(15.dp))
+                    TituloGastos()
+                    Spacer(modifier = Modifier.width(15.dp))
+                    TituloLimites()
+                }
+                Spacer(modifier = Modifier.padding(10.dp))
+
+                Row {
+                    ColumnaNombresCuentas(transaccionesPorCategorias = transaccionesPorCategorias)
+                    Spacer(modifier = Modifier.width(5.dp))
+                    ColumnaGastoPorCuenta(transaccionesPorCategorias = transaccionesPorCategorias)
+                    Spacer(modifier = Modifier.width(5.dp))
+                    ColumnaLimitesCuentas(
+                        transaccionesPorCategorias = transaccionesPorCategorias,
+                        limitesPorCategoria = limitesPorCategoria)
+                }
+                Spacer(modifier = Modifier.padding(15.dp))
+
+                Column (modifier = Modifier.align(Alignment.End),
+                    horizontalAlignment = Alignment.End) {
+                    BotonCerrarSesion(estadoNavegacion = estadoNavegacion)
+                }
                 Spacer(modifier = Modifier.padding(10.dp))
             }
         }
@@ -141,6 +175,13 @@ fun tituloPerfilScreen(){
     }
 }
 
+@Composable
+fun TituloCambiarCuentas(){
+    Box(modifier = Modifier
+        .padding(start = 10.dp)) {
+        Text(text = "Cambiar a otra cuenta:", fontSize = 15.sp)
+    }
+}
 @Composable
 fun desplegableCuentas(
     estadoExpansionCuenta: MutableState<Boolean>,
@@ -188,11 +229,54 @@ fun desplegableCuentas(
         }
     }
 }
+//
+//@Composable
+//fun MostrarCuentaSeleccionadaYLimite(
+//    cuentaSeleccionada: Cuenta?,
+//    seleccionarCuenta: MutableState<String>,
+//    perfilViewModel: PerfilViewModel
+//) {
+//    val categoriaSeleccionada = cuentaSeleccionada?.let { cuenta ->
+//        seleccionarCuenta.value.takeIf { it.isNotEmpty() }?.let { nombreCuenta ->
+//            perfilViewModel.obtenerCategoriasPorCuenta(cuenta.idCuenta).find { it.nombreCategoria == nombreCuenta }
+//        }
+//    }
+//
+//    Text(
+//        text = "Cuenta: ${categoriaSeleccionada?.nombreCategoria ?: " "}    Límite: ${categoriaSeleccionada?.cantidadLimite ?: " "}",
+//        fontSize = 16.sp
+//    )
+//}
 
 @Composable
-fun listaTransaccionesPorCategorias(
+fun TituloCategorias(){
+    Text(text = "Categorías", fontSize = 20.sp)
+}
+
+@Composable
+fun TituloGastos(){
+    Text(text = "Gatos", fontSize = 20.sp)
+}
+@Composable
+fun TituloLimites(){
+    Text(text = "Límites", fontSize = 20.sp)
+}
+
+@Composable
+fun ColumnaNombresCuentas(transaccionesPorCategorias: Map<String, Float>,){
+    Column(modifier = Modifier.padding(16.dp)) {
+        transaccionesPorCategorias.forEach { (categoria, cantidad) ->
+            Text(
+                text = "$categoria: ",
+                fontSize = 15.sp,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+        }
+    }
+}
+@Composable
+fun ColumnaGastoPorCuenta(
     transaccionesPorCategorias: Map<String, Float>,
-    limitesPorCategoria: Map<String, Float>
 ) {
     Column(
         modifier = Modifier
@@ -200,12 +284,54 @@ fun listaTransaccionesPorCategorias(
             .padding(20.dp)
     ) {
         transaccionesPorCategorias.forEach { (categoria, cantidad) ->
-            val limite = limitesPorCategoria[categoria] ?: 0.0f
             Text(
-                text = "$categoria: $cantidad / $limite",
+                text = "$cantidad ",
                 fontSize = 15.sp,
                 modifier = Modifier.padding(vertical = 4.dp)
             )
+        }
+    }
+}
+
+
+@Composable
+fun ColumnaLimitesCuentas(
+    transaccionesPorCategorias: Map<String, Float>,
+    limitesPorCategoria: Map<String, Float>
+){
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(20.dp)) {
+        transaccionesPorCategorias.forEach { (categoria, cantidad) ->
+            val cantidadLimite = limitesPorCategoria[categoria] ?: 0.0f
+            Text(
+                text = " $cantidadLimite",
+                fontSize = 15.sp,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+        }
+    }
+}
+
+
+@Composable
+fun BotonCerrarSesion(estadoNavegacion: NavController) {
+    Button(
+        onClick = {
+            estadoNavegacion.navigate("login")
+        },
+        modifier = Modifier
+            .width(105.dp)
+            .height(65.dp),
+    ){
+        Box {
+            Column (
+                modifier = Modifier
+                    .align(Alignment.Center),
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = "Cerrar")
+                Text(text = "Sesión")
+            }
         }
     }
 }

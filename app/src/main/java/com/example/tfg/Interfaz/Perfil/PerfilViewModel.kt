@@ -23,15 +23,15 @@ class PerfilViewModel : ViewModel() {
     fun obtenerListaDeTransacciones(): List<Transaccion> {
         return listOf(
             Transaccion(idTransaccion = 1, idCuenta = 1, idCategoria = 1, cantidadTransaccion = 150.0f, conceptoTransaccion = "Salario"),
-            Transaccion(idTransaccion = 2, idCuenta = 1, idCategoria = 2, cantidadTransaccion = -50.0f, conceptoTransaccion = "Compra en supermercado"),
+            Transaccion(idTransaccion = 2, idCuenta = 1, idCategoria = 2, cantidadTransaccion = 10.0f, conceptoTransaccion = "Compra en supermercado"),
             Transaccion(idTransaccion = 3, idCuenta = 2, idCategoria = 1, cantidadTransaccion = 200.0f, conceptoTransaccion = "Venta de producto"),
-            Transaccion(idTransaccion = 4, idCuenta = 2, idCategoria = 3, cantidadTransaccion = -100.0f, conceptoTransaccion = "Pago de alquiler"),
-            Transaccion(idTransaccion = 5, idCuenta = 2, idCategoria = 2, cantidadTransaccion = -25.0f, conceptoTransaccion = "Cena en restaurante"),
+            Transaccion(idTransaccion = 4, idCuenta = 2, idCategoria = 3, cantidadTransaccion = 100.0f, conceptoTransaccion = "Pago de alquiler"),
+            Transaccion(idTransaccion = 5, idCuenta = 2, idCategoria = 2, cantidadTransaccion = 25.0f, conceptoTransaccion = "Cena en restaurante"),
             Transaccion(idTransaccion = 6, idCuenta = 2, idCategoria = 4, cantidadTransaccion = 75.0f, conceptoTransaccion = "Devolución de impuestos"),
-            Transaccion(idTransaccion = 7, idCuenta = 1, idCategoria = 3, cantidadTransaccion = -30.0f, conceptoTransaccion = "Pago de servicios"),
+            Transaccion(idTransaccion = 7, idCuenta = 1, idCategoria = 3, cantidadTransaccion = 30.0f, conceptoTransaccion = "Pago de servicios"),
             Transaccion(idTransaccion = 8, idCuenta = 1, idCategoria = 1, cantidadTransaccion = 120.0f, conceptoTransaccion = "Ingresos varios"),
-            Transaccion(idTransaccion = 9, idCuenta = 1, idCategoria = 4, cantidadTransaccion = -70.0f, conceptoTransaccion = "Compra de ropa"),
-            Transaccion(idTransaccion = 10, idCuenta = 2, idCategoria = 2, cantidadTransaccion = -40.0f, conceptoTransaccion = "Gastos de transporte")
+            Transaccion(idTransaccion = 9, idCuenta = 1, idCategoria = 4, cantidadTransaccion = 70.0f, conceptoTransaccion = "Compra de ropa"),
+            Transaccion(idTransaccion = 10, idCuenta = 2, idCategoria = 2, cantidadTransaccion = 20.0f, conceptoTransaccion = "Gastos de transporte")
         )
     }
 

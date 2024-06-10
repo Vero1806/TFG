@@ -160,7 +160,10 @@ fun TituloCategorias() {
 
 @Composable
 fun TituloCambiarCuentas(){
-    Text(text = "Cambiar a otra cuenta:", fontSize = 15.sp)
+    Box(modifier = Modifier
+        .padding(start = 10.dp)) {
+        Text(text = "Cambiar a otra cuenta:", fontSize = 15.sp)
+    }
 }
 
 @Composable
